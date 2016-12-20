@@ -1,0 +1,17 @@
+package client;
+
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.net.*;
+
+public class ClientChargeThread extends Thread {
+	
+	private Socket server;
+	private PrintWriter pw;
+    private BufferedReader br;
+	ClientChargeThread(Socket server){
+		this.server=server;	    
+	}
+	
+
+}

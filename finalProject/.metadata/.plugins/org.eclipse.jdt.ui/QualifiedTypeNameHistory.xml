@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="javax.swing.ButtonGroup"/>
+<fullyQualifiedTypeName name="java.io.PrintWriter"/>
+<fullyQualifiedTypeName name="java.net.Socket"/>
+<fullyQualifiedTypeName name="java.nio.channels.NetworkChannel"/>
+<fullyQualifiedTypeName name="java.io.BufferedReader"/>
+<fullyQualifiedTypeName name="java.io.InputStream"/>
+<fullyQualifiedTypeName name="client.ClientChargeThread"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="client.ClientDoctorThread.medicineInfo"/>
+<fullyQualifiedTypeName name="client.ClientDoctorThread.patientInfo"/>
+<fullyQualifiedTypeName name="client.ClientDoctorThread"/>
+<fullyQualifiedTypeName name="client.Doctor"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="client.ClientChargeThread.ChargePatientInfo"/>
+</qualifiedTypeNameHistroy>

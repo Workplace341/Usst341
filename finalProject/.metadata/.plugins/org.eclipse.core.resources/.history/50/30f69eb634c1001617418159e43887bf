@@ -1,0 +1,168 @@
+package client;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JRadioButton;
+import java.awt.event.ActionListener;
+import java.io.*;
+import java.net.Socket;
+import java.awt.event.ActionEvent;
+
+public class Client extends JFrame {
+
+	private final String IP="192.168.1.106";
+	private JPanel contentPane;
+	private JTextField account;
+	private JTextField password;
+    private ButtonGroup bg=new ButtonGroup();
+    private Socket socket;
+    private PrintWriter pw;
+    private BufferedReader br;
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Client frame = new Client();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public Client() {
+		try {
+			socket=new Socket(IP,8888);
+			pw= new PrintWriter(socket.getOutputStream());
+			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		} catch (IOException e) {
+			         //与服务器连接失败
+			e.printStackTrace();
+		}
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 650, 450);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		account = new JTextField();
+		account.setBounds(290, 171, 104, 21);
+		contentPane.add(account);
+		account.setColumns(10);
+		
+		JLabel label = new JLabel("\u8D26\u53F7\uFF1A");
+		label.setBounds(232, 174, 36, 15);
+		contentPane.add(label);
+		
+		JLabel label_1 = new JLabel("\u5BC6\u7801\uFF1A");
+		label_1.setBounds(232, 202, 36, 15);
+		contentPane.add(label_1);
+		
+		password = new JTextField();
+		password.setColumns(10);
+		password.setBounds(290, 202, 104, 21);
+		contentPane.add(password);
+		
+		
+		
+		
+		JButton button_1 = new JButton("\u9884\u7EA6");
+		button_1.setBounds(252, 138, 93, 23);
+		contentPane.add(button_1);
+		
+		JRadioButton doctor = new JRadioButton("\u533B\u751F");
+		doctor.setBounds(142, 242, 66, 23);
+		contentPane.add(doctor);
+		
+		JRadioButton charge = new JRadioButton("\u6536\u8D39\u4EBA\u5458");
+		charge.setBounds(232, 242, 88, 23);
+		contentPane.add(charge);
+		
+		JRadioButton store = new JRadioButton("\u836F\u5E08");
+		store.setBounds(322, 242, 66, 23);
+		contentPane.add(store);
+		
+		JRadioButton admin = new JRadioButton("\u7BA1\u7406\u5458");
+		admin.setBounds(390, 242, 66, 23);
+		contentPane.add(admin);
+		
+		JRadioButton president = new JRadioButton("\u9662\u957F");
+		president.setBounds(482, 242, 66, 23);
+		contentPane.add(president);
+		
+		
+		
+		bg.add(doctor);
+		bg.add(store);
+		bg.add(president);
+		bg.add(charge);
+		bg.add(admin);
+		
+		JButton button = new JButton("\u767B\u5F55");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(charge.isSelected()){
+					login("charge");
+				}
+				else if(doctor.isSelected()){
+					login("doctor");
+				}
+				else if(doctor.isSelected()){
+					login("store");
+				}
+				else if(doctor.isSelected()){
+					login("admin");
+				}
+				else if(doctor.isSelected()){
+					login("predident");
+				}
+			}
+		});
+		button.setBounds(301, 292, 93, 23);
+		contentPane.add(button);
+	}
+	
+	public void login(String type){
+		String acc=account.getText();
+		String pas=password.getText();
+		pw.println(type+","+acc+","+pas);
+		System.out.println(type+","+acc+","+pas);
+		pw.flush();
+		try {
+			String sign=br.readLine();
+			if(sign.equals("OK")){
+				switch(type){
+				case "charge":this.setVisible(false);new ClientChargeThread(socket).start();break;
+				case "doctor":break;
+				case "store":break;
+				case "admin":break;
+				case "president":break;
+				default :break;
+				}
+			}
+		} catch (IOException e) {
+			                   //连接失败
+			e.printStackTrace();
+		}	
+			
+	}		
+			
+		
+	
+}

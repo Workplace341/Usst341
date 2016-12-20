@@ -1,0 +1,115 @@
+package client;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JRadioButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class Client extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField textField;
+	private JTextField textField_1;
+    private ButtonGroup bg=new ButtonGroup();
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Client frame = new Client();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public Client() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 650, 450);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		textField = new JTextField();
+		textField.setBounds(290, 171, 104, 21);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
+		JLabel label = new JLabel("\u8D26\u53F7\uFF1A");
+		label.setBounds(232, 174, 36, 15);
+		contentPane.add(label);
+		
+		JLabel label_1 = new JLabel("\u5BC6\u7801\uFF1A");
+		label_1.setBounds(232, 202, 36, 15);
+		contentPane.add(label_1);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(290, 202, 104, 21);
+		contentPane.add(textField_1);
+		
+		
+		
+		
+		JButton button_1 = new JButton("\u9884\u7EA6");
+		button_1.setBounds(252, 138, 93, 23);
+		contentPane.add(button_1);
+		
+		JRadioButton doctor = new JRadioButton("\u533B\u751F");
+		doctor.setBounds(142, 242, 66, 23);
+		contentPane.add(doctor);
+		
+		JRadioButton charge = new JRadioButton("\u6536\u8D39\u4EBA\u5458");
+		charge.setBounds(232, 242, 88, 23);
+		contentPane.add(charge);
+		
+		JRadioButton store = new JRadioButton("\u836F\u5E08");
+		store.setBounds(322, 242, 66, 23);
+		contentPane.add(store);
+		
+		JRadioButton admin = new JRadioButton("\u7BA1\u7406\u5458");
+		admin.setBounds(390, 242, 66, 23);
+		contentPane.add(admin);
+		
+		JRadioButton president = new JRadioButton("\u9662\u957F");
+		president.setBounds(482, 242, 66, 23);
+		contentPane.add(president);
+		
+		
+		
+		bg.add(doctor);
+		bg.add(store);
+		bg.add(president);
+		bg.add(charge);
+		bg.add(admin);
+		
+		JButton button = new JButton("\u767B\u5F55");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+//				if(){
+//					System.out.println("doctor");
+//				}
+				System.out.println(bg.getSelection());
+			}
+		});
+		button.setBounds(301, 292, 93, 23);
+		contentPane.add(button);
+	}
+}

@@ -1,0 +1,147 @@
+package client;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JList;
+import javax.swing.JTextPane;
+import javax.swing.JTextArea;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+
+public class Doctor extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
+	private JTextField textField_4;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Doctor frame = new Doctor();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public Doctor() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 650, 450);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setBounds(297, 62, 327, 187);
+		contentPane.add(textArea);
+		
+		JLabel label = new JLabel("\u5F53\u524D\u7B49\u5F85\u961F\u5217");
+		label.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 25));
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setBounds(377, 10, 179, 30);
+		contentPane.add(label);
+		
+		JButton btnNewButton = new JButton("\u6DFB\u52A0");
+		btnNewButton.setBounds(294, 350, 93, 30);
+		contentPane.add(btnNewButton);
+		
+		textField = new JTextField();
+		textField.setBounds(284, 304, 136, 21);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
+		JLabel label_1 = new JLabel("\u5F53\u524D\u8BCA\u65AD\u7684\u4EBA");
+		label_1.setHorizontalAlignment(SwingConstants.CENTER);
+		label_1.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 25));
+		label_1.setBounds(39, 10, 179, 30);
+		contentPane.add(label_1);
+		
+		JLabel label_2 = new JLabel("\u59D3\u540D\uFF1A");
+		label_2.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
+		label_2.setBounds(25, 62, 54, 15);
+		contentPane.add(label_2);
+		
+		textField_1 = new JTextField();
+		textField_1.setEditable(false);
+		textField_1.setColumns(10);
+		textField_1.setBounds(138, 61, 106, 21);
+		contentPane.add(textField_1);
+		
+		textField_2 = new JTextField();
+		textField_2.setEditable(false);
+		textField_2.setColumns(10);
+		textField_2.setBounds(138, 101, 106, 21);
+		contentPane.add(textField_2);
+		
+		textField_3 = new JTextField();
+		textField_3.setEditable(false);
+		textField_3.setColumns(10);
+		textField_3.setBounds(138, 145, 106, 21);
+		contentPane.add(textField_3);
+		
+		JLabel label_3 = new JLabel("\u5E74\u9F84\uFF1A");
+		label_3.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
+		label_3.setBounds(25, 151, 54, 15);
+		contentPane.add(label_3);
+		
+		JLabel label_4 = new JLabel("\u6027\u522B\uFF1A");
+		label_4.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
+		label_4.setBounds(25, 106, 54, 16);
+		contentPane.add(label_4);
+		
+		textField_4 = new JTextField();
+		textField_4.setBounds(460, 304, 141, 21);
+		contentPane.add(textField_4);
+		textField_4.setColumns(10);
+		
+		JLabel label_5 = new JLabel("\u8F93\u5165\u836F\u54C1\u6216\u6536\u8D39\u9879\u76EE");
+		label_5.setHorizontalAlignment(SwingConstants.CENTER);
+		label_5.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
+		label_5.setBounds(267, 275, 179, 19);
+		contentPane.add(label_5);
+		
+		JLabel label_6 = new JLabel("\u8F93\u5165\u6570\u91CF");
+		label_6.setHorizontalAlignment(SwingConstants.CENTER);
+		label_6.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
+		label_6.setBounds(460, 275, 136, 19);
+		contentPane.add(label_6);
+		
+		JTextArea textArea_1 = new JTextArea();
+		textArea_1.setBounds(13, 227, 231, 174);
+		contentPane.add(textArea_1);
+		
+		JLabel label_7 = new JLabel("\u5DF2\u6DFB\u52A0\u7684\u5185\u5BB9");
+		label_7.setHorizontalAlignment(SwingConstants.CENTER);
+		label_7.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 25));
+		label_7.setBounds(39, 187, 179, 30);
+		contentPane.add(label_7);
+		
+		JButton button = new JButton("\u6DFB\u52A0");
+		button.setBounds(397, 350, 93, 30);
+		contentPane.add(button);
+		
+		JButton button_1 = new JButton("\u6DFB\u52A0");
+		button_1.setBounds(500, 350, 93, 30);
+		contentPane.add(button_1);
+	}
+}

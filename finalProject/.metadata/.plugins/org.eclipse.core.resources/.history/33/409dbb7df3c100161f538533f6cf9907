@@ -1,0 +1,107 @@
+package client;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import java.awt.CardLayout;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import java.awt.Font;
+
+public class Charge extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField age;
+	private JTextField sex;
+	private JTextField name;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Charge frame = new Charge();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public Charge() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 650, 450);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		CardLayout card=new CardLayout(0, 0);
+		contentPane.setLayout(card);
+		
+		JPanel panel = new JPanel();
+		contentPane.add(panel, "name_143185036439128");
+		panel.setLayout(null);
+		
+		JButton btnNewButton_1 = new JButton("\u786E\u5B9A\u6302\u53F7");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnNewButton_1.setBounds(289, 307, 106, 33);
+		panel.add(btnNewButton_1);
+		
+		age = new JTextField();
+		age.setColumns(10);
+		age.setBounds(289, 225, 106, 21);
+		panel.add(age);
+		
+		sex = new JTextField();
+		sex.setColumns(10);
+		sex.setBounds(289, 143, 106, 21);
+		panel.add(sex);
+		
+		name = new JTextField();
+		name.setColumns(10);
+		name.setBounds(289, 61, 106, 21);
+		panel.add(name);
+		
+		JLabel label = new JLabel("\u59D3\u540D\uFF1A");
+		label.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
+		label.setBounds(176, 67, 54, 15);
+		panel.add(label);
+		
+		JLabel label_1 = new JLabel("\u6027\u522B\uFF1A");
+		label_1.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
+		label_1.setBounds(176, 149, 54, 15);
+		panel.add(label_1);
+		
+		JLabel label_2 = new JLabel("\u5E74\u9F84\uFF1A");
+		label_2.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
+		label_2.setBounds(176, 231, 54, 15);
+		panel.add(label_2);
+		
+		JButton button = new JButton("\u786E\u5B9A\u6302\u53F7");
+		button.setBounds(154, 307, 106, 33);
+		panel.add(button);
+		
+		
+		JPanel panel_1 = new JPanel();
+		contentPane.add(panel_1, "name_143217567772494");
+		panel_1.setLayout(null);
+		
+		JButton btnNewButton = new JButton("New button");
+		btnNewButton.setBounds(162, 115, 93, 23);
+		panel_1.add(btnNewButton);
+	}
+}

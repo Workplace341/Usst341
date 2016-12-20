@@ -1,0 +1,215 @@
+package finalServer;
+
+import java.io.*;
+import java.net.*;
+import java.sql.*;
+import java.util.*;
+
+public class Server {
+
+	class DoctorInfo{
+		String account;
+		String name;
+		String department;
+		int waitCount;
+		ArrayList<String> patientQueue=new ArrayList<String>();
+		
+	}
+	class medicineInfo{
+		String name;
+		int count;
+		int price;
+	}
+	
+	
+	ServerSocket server;
+	static Socket charge;
+	static Socket store;
+	static Socket client;
+	
+	
+	static int internalCount;//内科排队人数
+	static int surgeryCount; //外科排队人数
+	static public HashMap<String,Socket> doctorSocket =new HashMap<String,Socket>();
+	static public ArrayList<DoctorInfo> onlineDoctor=new ArrayList<DoctorInfo>();
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	Server(){                      //构造函数
+		
+		Connection con=null;
+		//加载数据库驱动程序
+		try {
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+		} catch (ClassNotFoundException e) {
+			                   //驱动失败
+			e.printStackTrace();
+		}	
+		//建立数据库连接
+		String str="jdbc:sqlserver://localhost:1433;databaseName=medical";
+		try {
+			con = DriverManager.getConnection(str,"sa","199511");
+		} catch (SQLException e) {
+			                              //连接失败
+			e.printStackTrace();
+		}
+		if(con!=null){
+			System.out.println("数据库连接成功");
+		}
+		
+		try {
+		    server=new ServerSocket(12000);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		
+		
+		
+	}	
+	
+	public void openServer(){
+		
+		while(true){  //死循环，一直等待socket连接
+			try {
+				client=server.accept();  
+				System.out.println("已连接上");
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						addSoket(Server.client);				
+					}
+				}).start();
+					
+		   
+									
+				
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+	}
+		
+
+	private void addSoket(Socket c) {
+		try {
+			Socket client=c;
+			//info=类型，账号，密码，
+			BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
+	    	while(true){
+				String info=br.readLine();
+				if(analysis(info,client)){//分析登录的信息
+					break;
+				}  
+			}
+			System.out.println("登陆成功，线程退出");
+			
+		} catch (IOException e) {
+			        //登录不成功，连接失败
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public boolean analysis(String info, Socket client){
+		
+		String[] string=info.split(",");
+		String account=string[1];
+		String password=string[2];
+		PrintWriter pw;
+		if(!login(account,password)){// 登录，如果账号密码正确，则进入下一步开始线程
+			
+			
+			try {
+				pw = new PrintWriter(client.getOutputStream());
+				pw.println("NO");
+		    	pw.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return false;
+		}
+		
+		try {
+			pw = new PrintWriter(client.getOutputStream());
+			pw.println("OK");
+	    	pw.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if(string[0].equals("charge")){
+			charge=client;
+			System.out.println("开启线程");
+			new ChargeThread(client).start();
+			
+		}		
+		else if(string[0].equals("doctor")){
+			doctorSocket.put(string[1], client); 
+			 addOnlineDoctorInfo(string[1]);                                     //update在线医生信息
+			new DoctorThread(client).start();  //开启医生线程
+		}
+		else if(string[0].equals("store")){
+			store=client;
+			new StoreThread(client).start();
+		}
+		return true;
+	}
+	
+	private void addOnlineDoctorInfo(String string) {
+		                            //读数据库 医生信息表
+		if(string.equals("123")){
+			DoctorInfo di=new DoctorInfo();
+			di.name="张三";
+			di.waitCount=0;
+			di.department="surgery";
+			di.account=string;
+			onlineDoctor.add(di);
+		}else if(string.equals("456")){
+			DoctorInfo di=new DoctorInfo();
+			di.name="李四";
+			di.waitCount=0;
+			di.department="surgery";
+			di.account=string;
+			onlineDoctor.add(di);
+		}
+		
+	}
+
+	private boolean login(String account, String password) { //登录函数
+		if(account.equals("123")&&password.equals("abc"))   //读数据库 账号信息表
+			return true;
+		else if(account.equals("456")&&password.equals("abc"))
+			return true;
+		System.out.println("账号密码错误");
+		     return false;
+		
+	}
+	
+	public static void main(String[] args) {
+		Server server=new Server();
+		server.openServer();  //打开服务器
+
+	}
+
+}
+

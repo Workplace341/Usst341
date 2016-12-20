@@ -1,0 +1,205 @@
+package client;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JList;
+import javax.swing.JTextPane;
+import javax.swing.JTextArea;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class Doctor extends JFrame {
+
+	static JPanel contentPane;
+	static public JTextField medicine;
+	static public JTextField name;
+	static public JTextField sex;
+	static public JTextField age;
+	static public JTextField count;
+	static public JTextArea wait;
+	private String currentString="";
+	private JTextArea content;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Doctor frame = new Doctor();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public Doctor() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 650, 450);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		//JScrollPane scroll = new JScrollPane(); 
+		//把定义的JTextArea放到JScrollPane里面去 
+		
+		
+		JLabel label = new JLabel("\u5F53\u524D\u7B49\u5F85\u961F\u5217");
+		label.setFont(new Font("微软雅黑", Font.PLAIN, 25));
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setBounds(377, 10, 179, 30);
+		contentPane.add(label);
+		
+		
+		
+		medicine = new JTextField();
+		medicine.setBounds(284, 304, 136, 21);
+		contentPane.add(medicine);
+		medicine.setColumns(10);
+		
+		JLabel label_1 = new JLabel("\u5F53\u524D\u8BCA\u65AD\u7684\u4EBA");
+		label_1.setHorizontalAlignment(SwingConstants.CENTER);
+		label_1.setFont(new Font("微软雅黑", Font.PLAIN, 25));
+		label_1.setBounds(39, 10, 179, 30);
+		contentPane.add(label_1);
+		
+		JLabel label_2 = new JLabel("\u59D3\u540D\uFF1A");
+		label_2.setFont(new Font("微软雅黑", Font.PLAIN, 18));
+		label_2.setBounds(25, 62, 54, 15);
+		contentPane.add(label_2);
+		
+		name = new JTextField();
+		name.setEditable(false);
+		name.setColumns(10);
+		name.setBounds(138, 61, 106, 21);
+		contentPane.add(name);
+		
+		sex = new JTextField();
+		sex.setEditable(false);
+		sex.setColumns(10);
+		sex.setBounds(138, 101, 106, 21);
+		contentPane.add(sex);
+		
+		age = new JTextField();
+		age.setEditable(false);
+		age.setColumns(10);
+		age.setBounds(138, 145, 106, 21);
+		contentPane.add(age);
+		
+		JLabel label_3 = new JLabel("\u5E74\u9F84\uFF1A");
+		label_3.setFont(new Font("微软雅黑", Font.PLAIN, 18));
+		label_3.setBounds(25, 151, 54, 15);
+		contentPane.add(label_3);
+		
+		JLabel label_4 = new JLabel("\u6027\u522B\uFF1A");
+		label_4.setFont(new Font("微软雅黑", Font.PLAIN, 18));
+		label_4.setBounds(25, 106, 54, 16);
+		contentPane.add(label_4);
+		
+		count = new JTextField();
+		count.setBounds(460, 304, 141, 21);
+		contentPane.add(count);
+		count.setColumns(10);
+		
+		JLabel label_5 = new JLabel("\u8F93\u5165\u836F\u54C1\u6216\u6536\u8D39\u9879\u76EE");
+		label_5.setHorizontalAlignment(SwingConstants.CENTER);
+		label_5.setFont(new Font("微软雅黑", Font.PLAIN, 18));
+		label_5.setBounds(267, 275, 179, 19);
+		contentPane.add(label_5);
+		
+		JLabel label_6 = new JLabel("\u8F93\u5165\u6570\u91CF");
+		label_6.setHorizontalAlignment(SwingConstants.CENTER);
+		label_6.setFont(new Font("微软雅黑", Font.PLAIN, 18));
+		label_6.setBounds(460, 275, 136, 19);
+		contentPane.add(label_6);
+		
+		content = new JTextArea();
+		content.setEditable(false);
+		content.setBounds(13, 227, 231, 174);
+		contentPane.add(content);
+		
+		JLabel label_7 = new JLabel("\u5DF2\u6DFB\u52A0\u7684\u5185\u5BB9");
+		label_7.setHorizontalAlignment(SwingConstants.CENTER);
+		label_7.setFont(new Font("微软雅黑", Font.PLAIN, 25));
+		label_7.setBounds(39, 187, 179, 30);
+		contentPane.add(label_7);
+		
+		JButton cancel = new JButton("\u64A4\u9500");
+		cancel.setBounds(360, 350, 80, 30);
+		contentPane.add(cancel);
+		
+		JButton next = new JButton("\u8BCA\u65AD\u5B8C\u6210");
+		next.setBounds(450, 350, 80, 30);
+		contentPane.add(next);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(279, 50, 345, 203);
+		contentPane.add(scrollPane);
+		
+		wait = new JTextArea();
+		scrollPane.setViewportView(wait);
+		wait.setEditable(false);
+		//分别设置水平和垂直滚动条自动出现 
+		//scroll.setHorizontalScrollBarPolicy( 
+		//JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); 
+		scrollPane.setVerticalScrollBarPolicy( 
+		JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED); 
+		
+		
+		//分别设置水平和垂直滚动条总是出现 
+		//scrollPane.setHorizontalScrollBarPolicy( 
+		//JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS); 
+		//scrollPane.setVerticalScrollBarPolicy( 
+		//JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
+
+		//分别设置水平和垂直滚动条总是隐藏
+		//scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
+		
+		//scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER); 
+		//wait.setCaretPosition(wait.getText().length());//设置textarea中垂直滚动条始终显示在最下方 
+		
+		JButton addBtn = new JButton("\u6DFB\u52A0");
+		addBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String name=medicine.getText();
+				String sum=count.getText();
+				if(name.equals("")||sum.equals("")){
+					return;
+				}
+			//	content.setText("11111");
+				if((ClientDoctorThread.myMedicineInfo.get(name)!=null)&&(sum.matches("[0-9]"))){
+					currentString+=name+"\t"+sum+"\n";
+					content.setText(currentString);
+					ClientDoctorThread.sendMedicineInfo+=("#"+name+"+"+sum);
+					
+				}
+				
+				
+			}
+		});
+		addBtn.setBounds(270, 350, 80, 30);
+		contentPane.add(addBtn);
+		
+		JButton button = new JButton("\u8DF3\u8FC7");
+		button.setBounds(540, 350, 80, 30);
+		contentPane.add(button);
+		
+	}
+}
