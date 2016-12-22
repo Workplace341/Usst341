@@ -29,6 +29,7 @@ public class Doctor extends JFrame {
 	static public JTextArea wait;
     static public String currentString="";
 	static public JTextArea content;
+	static public JTextField ID;
 
 	/**
 	 * Launch the application.
@@ -94,23 +95,23 @@ public class Doctor extends JFrame {
 		sex = new JTextField();
 		sex.setEditable(false);
 		sex.setColumns(10);
-		sex.setBounds(138, 101, 106, 21);
+		sex.setBounds(137, 90, 106, 21);
 		contentPane.add(sex);
 		
 		age = new JTextField();
 		age.setEditable(false);
 		age.setColumns(10);
-		age.setBounds(138, 145, 106, 21);
+		age.setBounds(138, 119, 106, 21);
 		contentPane.add(age);
 		
 		JLabel label_3 = new JLabel("\u5E74\u9F84\uFF1A");
 		label_3.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
-		label_3.setBounds(25, 151, 54, 15);
+		label_3.setBounds(25, 125, 54, 15);
 		contentPane.add(label_3);
 		
 		JLabel label_4 = new JLabel("\u6027\u522B\uFF1A");
 		label_4.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
-		label_4.setBounds(25, 106, 54, 16);
+		label_4.setBounds(24, 95, 54, 16);
 		contentPane.add(label_4);
 		
 		count = new JTextField();
@@ -151,7 +152,7 @@ public class Doctor extends JFrame {
 		cancel.setBounds(360, 350, 85, 30);
 		contentPane.add(cancel);
 		
-		JButton next = new JButton("\u8BCA\u65AD\u5B8C\u6210");
+		JButton next = new JButton("\u5B8C\u6210");
 		next.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(currentString.equals("")){
@@ -162,13 +163,18 @@ public class Doctor extends JFrame {
 				System.out.println(str+ClientDoctorThread.sendMedicineInfo);
 				ClientDoctorThread.myWaitPatient.remove(0);
 				if(ClientDoctorThread.myWaitPatient.size()!=0){
-				Doctor.name.setText(ClientDoctorThread.myWaitPatient.get(0).name);
-				Doctor.sex.setText(ClientDoctorThread.myWaitPatient.get(0).sex);
-				Doctor.age.setText(ClientDoctorThread.myWaitPatient.get(0).age);
+					Doctor.name.setText(ClientDoctorThread.myWaitPatient.get(0).name);
+					Doctor.sex.setText(ClientDoctorThread.myWaitPatient.get(0).sex);
+					Doctor.age.setText(ClientDoctorThread.myWaitPatient.get(0).age);
+					Doctor.ID.setText(ClientDoctorThread.myWaitPatient.get(0).id);	
 				}
-				ClientDoctorThread.updatePaitenInfo();
-				
-				
+				else{
+					Doctor.name.setText("");
+					Doctor.sex.setText("");
+					Doctor.age.setText("");
+					Doctor.ID.setText("");
+				}
+				ClientDoctorThread.updatePaitenInfo();			
 			}
 		});
 		next.setBounds(450, 350, 85, 30);
@@ -224,8 +230,26 @@ public class Doctor extends JFrame {
 		contentPane.add(addBtn);
 		
 		JButton button = new JButton("\u8DF3\u8FC7");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ClientDoctorThread.nextFunctioin();
+				
+				
+			}
+		});
 		button.setBounds(540, 350, 85, 30);
 		contentPane.add(button);
+		
+		JLabel label_8 = new JLabel("\u75C5\u4EBA\u53F7\u7801\uFF1A");
+		label_8.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
+		label_8.setBounds(25, 150, 106, 17);
+		contentPane.add(label_8);
+		
+		ID = new JTextField();
+		ID.setEditable(false);
+		ID.setColumns(10);
+		ID.setBounds(138, 149, 106, 21);
+		contentPane.add(ID);
 		
 	}
 }

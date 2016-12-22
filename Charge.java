@@ -32,6 +32,13 @@ public class Charge extends JFrame {
 	static public JTextField cname;
 	static public JTextArea wait;
 	static public JLabel pay;
+	static public JTextField ID;
+	static public JTextField pname;
+	static public JTextField psex;
+	static public JTextField page;
+	static public JTextField pdepart;
+	static public JTextArea pwait;
+	static public JLabel pnotice;
 	/**
 	 * Launch the application.
 	 */
@@ -52,6 +59,7 @@ public class Charge extends JFrame {
 	 * Create the frame.
 	 */
 	public Charge() {
+		this.setTitle("ÊÕ·Ñ¿Í»§¶Ë");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 650, 450);
 		contentPane = new JPanel();
@@ -100,6 +108,7 @@ public class Charge extends JFrame {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				card.show(contentPane, "predict");
+				Charge.pnotice.setText("¹ÒºÅÍ¨Öª");
 			}
 		});
 		button.setBounds(85, 307, 145, 33);
@@ -116,6 +125,30 @@ public class Charge extends JFrame {
 		panel_2.setLayout(null);
 		
 		JButton btnNewButton_3 = new JButton("\u4ED8\u6B3E");
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ClientChargeThread.sendPayInfo();
+				ClientChargeThread.myChargePatientInfo.remove(0);
+				if(ClientChargeThread.myChargePatientInfo.size()!=0){
+					ClientChargeThread.ChargePatientInfo cp=ClientChargeThread.myChargePatientInfo.get(0);
+					Charge.cname.setText(cp.name);
+					Charge.csex.setText(cp.sex);
+					Charge.cage.setText(cp.age);
+					Charge.ID.setText(cp.id);
+					Charge.pay.setText("ÐèÒªÖ§¸¶"+cp.price+"Ôª");
+				}
+				else{
+					Charge.cname.setText("");
+					Charge.csex.setText("");
+					Charge.cage.setText("");
+					Charge.ID.setText("");
+					Charge.pay.setText("");
+				}
+				
+				ClientChargeThread.updatePaitenInfo();
+				
+			}
+		});
 		btnNewButton_3.setBounds(277, 333, 106, 35);
 		panel_2.add(btnNewButton_3);
 		
@@ -131,7 +164,7 @@ public class Charge extends JFrame {
 		cage = new JTextField();
 		cage.setEditable(false);
 		cage.setColumns(10);
-		cage.setBounds(135, 135, 106, 21);
+		cage.setBounds(135, 113, 106, 21);
 		panel_2.add(cage);
 		
 		JTextArea content = new JTextArea();
@@ -153,7 +186,7 @@ public class Charge extends JFrame {
 		csex = new JTextField();
 		csex.setEditable(false);
 		csex.setColumns(10);
-		csex.setBounds(135, 91, 106, 21);
+		csex.setBounds(135, 82, 106, 21);
 		panel_2.add(csex);
 		
 		cname = new JTextField();
@@ -175,15 +208,20 @@ public class Charge extends JFrame {
 		
 		JLabel label_7 = new JLabel("\u6027\u522B\uFF1A");
 		label_7.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
-		label_7.setBounds(22, 96, 54, 16);
+		label_7.setBounds(22, 82, 54, 16);
 		panel_2.add(label_7);
 		
 		JLabel label_8 = new JLabel("\u5E74\u9F84\uFF1A");
 		label_8.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
-		label_8.setBounds(22, 141, 54, 15);
+		label_8.setBounds(22, 114, 54, 15);
 		panel_2.add(label_8);
 		
 		JButton button_4 = new JButton("\u4E0B\u4E00\u4E2A");
+		button_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				 ClientChargeThread.nextFunction();
+			}
+		});
 		button_4.setBounds(393, 333, 106, 35);
 		panel_2.add(button_4);
 		
@@ -199,34 +237,137 @@ public class Charge extends JFrame {
 		pay.setBounds(322, 273, 251, 30);
 		panel_2.add(pay);
 		
+		ID = new JTextField();
+		ID.setEditable(false);
+		ID.setColumns(10);
+		ID.setBounds(135, 144, 106, 21);
+		panel_2.add(ID);
+		
+		JLabel label_10 = new JLabel("\u75C5\u4EBA\u53F7\u7801\uFF1A");
+		label_10.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
+		label_10.setBounds(22, 145, 106, 17);
+		panel_2.add(label_10);
+		
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, "predict");
 		panel_1.setLayout(null);
 		
 		JButton btnNewButton = new JButton("\u786E\u5B9A\u6302\u53F7");
-		btnNewButton.setBounds(181, 321, 93, 23);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(ClientChargeThread.myPredictPatinetInfo.size()==0){
+					return;
+				}
+				ClientChargeThread.sendPredictInfo();
+				ClientChargeThread.updatePredictPatienInfo();
+				if(ClientChargeThread.myPredictPatinetInfo.size()!=0){
+					ClientChargeThread.PredictPatientInfo p=ClientChargeThread.myPredictPatinetInfo.get(0);
+					Charge.pname.setText(p.name);
+					Charge.psex.setText(p.sex);
+					Charge.page.setText(p.age);
+					Charge.pdepart.setText(p.department);
+				}
+				else{
+					Charge.pname.setText("");
+					Charge.psex.setText("");
+					Charge.page.setText("");
+					Charge.pdepart.setText("");
+				}
+				Charge.pnotice.setText("¹ÒºÅÍ¨Öª");
+			}
+		});
+		btnNewButton.setBounds(77, 342, 81, 37);
 		panel_1.add(btnNewButton);
-		
-		JTextArea txtrDsf = new JTextArea();
-		txtrDsf.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 25));
-		txtrDsf.setText("dsf ");
-		txtrDsf.setBounds(51, 66, 512, 178);
-		panel_1.add(txtrDsf);
-		
-		JLabel label_3 = new JLabel("\u9884\u7EA6\u961F\u5217");
-		label_3.setHorizontalAlignment(SwingConstants.CENTER);
-		label_3.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 25));
-		label_3.setBounds(199, 26, 179, 30);
-		panel_1.add(label_3);
 		
 		JButton button_1 = new JButton("\u8FD4\u56DE");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				card.show(contentPane,"main");
+				Charge.notice.setText("¹ÒºÅÍ¨Öª");
+	    		//Charge.pnotice.setText(noti);
 			}
 		});
-		button_1.setBounds(300, 321, 93, 23);
+		button_1.setBounds(431, 342, 91, 37);
 		panel_1.add(button_1);
+		
+		JLabel label_3 = new JLabel("\u5F53\u524D\u64CD\u4F5C\u7684\u4EBA");
+		label_3.setHorizontalAlignment(SwingConstants.CENTER);
+		label_3.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 25));
+		label_3.setBounds(25, 10, 179, 30);
+		panel_1.add(label_3);
+		
+		JLabel label_11 = new JLabel("\u59D3\u540D\uFF1A");
+		label_11.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
+		label_11.setBounds(11, 62, 54, 15);
+		panel_1.add(label_11);
+		
+		pname = new JTextField();
+		pname.setEditable(false);
+		pname.setColumns(10);
+		pname.setBounds(124, 61, 106, 21);
+		panel_1.add(pname);
+		
+		psex = new JTextField();
+		psex.setEditable(false);
+		psex.setColumns(10);
+		psex.setBounds(123, 90, 106, 21);
+		panel_1.add(psex);
+		
+		JLabel label_12 = new JLabel("\u6027\u522B\uFF1A");
+		label_12.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
+		label_12.setBounds(10, 95, 54, 16);
+		panel_1.add(label_12);
+		
+		JLabel label_13 = new JLabel("\u5E74\u9F84\uFF1A");
+		label_13.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
+		label_13.setBounds(11, 125, 54, 15);
+		panel_1.add(label_13);
+		
+		page = new JTextField();
+		page.setEditable(false);
+		page.setColumns(10);
+		page.setBounds(124, 119, 106, 21);
+		panel_1.add(page);
+		
+		pdepart = new JTextField();
+		pdepart.setEditable(false);
+		pdepart.setColumns(10);
+		pdepart.setBounds(124, 149, 106, 21);
+		panel_1.add(pdepart);
+		
+		JLabel label_14 = new JLabel("\u9884\u7EA6\u79D1\u5BA4\uFF1A");
+		label_14.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
+		label_14.setBounds(11, 150, 106, 17);
+		panel_1.add(label_14);
+		
+		pwait = new JTextArea();
+		pwait.setEditable(false);
+		pwait.setBounds(266, 51, 343, 201);
+		panel_1.add(pwait);
+		
+		JLabel label_15 = new JLabel("\u5F53\u524D\u7B49\u5F85\u961F\u5217");
+		label_15.setHorizontalAlignment(SwingConstants.CENTER);
+		label_15.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 25));
+		label_15.setBounds(363, 10, 179, 30);
+		panel_1.add(label_15);
+		
+		JButton button_5 = new JButton("\u53D6\u6D88\u6302\u53F7");
+		button_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		button_5.setBounds(198, 342, 81, 37);
+		panel_1.add(button_5);
+		
+		JButton button_6 = new JButton("\u8DF3\u8FC7");
+		button_6.setBounds(316, 342, 81, 37);
+		panel_1.add(button_6);
+		
+		pnotice = new JLabel("\u6302\u53F7\u901A\u77E5");
+		pnotice.setHorizontalAlignment(SwingConstants.CENTER);
+		pnotice.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 25));
+		pnotice.setBounds(204, 282, 179, 30);
+		panel_1.add(pnotice);
 		
 		
 		

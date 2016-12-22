@@ -18,7 +18,7 @@ import java.awt.event.ActionEvent;
 
 public class Client extends JFrame {
 
-	private final String IP="192.168.1.107";//"172.30.42.6";
+	private final String IP="10.40.140.14";//"192.168.1.107";//"10.20.160.19";////"172.30.42.6";
 	private final int PORT=12000;
 	private JPanel contentPane;
 	private JTextField account;
@@ -81,8 +81,8 @@ public class Client extends JFrame {
 		contentPane.add(label_1);
 		
 		password = new JTextField();
-		password.setColumns(10);
 		password.setBounds(290, 202, 104, 21);
+		password.setColumns(10);
 		contentPane.add(password);
 		
 		
@@ -121,6 +121,7 @@ public class Client extends JFrame {
 		bg.add(admin);
 		
 		JButton button = new JButton("\u767B\u5F55");
+		button.setBounds(301, 292, 93, 23);
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(charge.isSelected()){
@@ -129,18 +130,17 @@ public class Client extends JFrame {
 				else if(doctor.isSelected()){
 					login("doctor");
 				}
-				else if(doctor.isSelected()){
+				else if(store.isSelected()){
 					login("store");
 				}
-				else if(doctor.isSelected()){
+				else if(admin.isSelected()){
 					login("admin");
 				}
-				else if(doctor.isSelected()){
+				else if(president.isSelected()){
 					login("predident");
 				}
 			}
 		});
-		button.setBounds(301, 292, 93, 23);
 		contentPane.add(button);
 	}
 	

@@ -8,6 +8,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.print.Doc;
+
 public class ClientDoctorThread extends Thread {
 	class patientInfo{
 		patientInfo(String name,String sex,String age,String id){
@@ -37,7 +39,7 @@ public class ClientDoctorThread extends Thread {
 	private Socket server;
 	private static PrintWriter pw;
     private BufferedReader br;
-    private static String waitString="名字\t性别\t年龄\n";
+    private static String waitString="名字\t性别\t年龄\t病人号码\n";
     static public  ArrayList<patientInfo> myWaitPatient=new ArrayList<patientInfo>();
     static public HashMap<String,medicineInfo> myMedicineInfo=new HashMap<String,medicineInfo>();
     
@@ -78,11 +80,12 @@ public class ClientDoctorThread extends Thread {
 		if(myWaitPatient.size()==0){
 			Doctor.name.setText(string[0]);
 			Doctor.sex.setText(string[1]);
-			Doctor.age.setText(string[2]);		
+			Doctor.age.setText(string[2]);	
+			Doctor.ID.setText(string[3]);
 		} 
 		patientInfo p=new patientInfo(string[0],string[1],string[2],string[3]);
 		myWaitPatient.add(p);
-		waitString+=(string[0]+"\t"+string[1]+"\t"+string[2]+"\n");
+		waitString+=(string[0]+"\t"+string[1]+"\t"+string[2]+"\t"+string[3]+"\n");
 		Doctor.wait.setText(waitString);
 		
 	}
@@ -110,14 +113,30 @@ public class ClientDoctorThread extends Thread {
     }
 		
 	static public void updatePaitenInfo(){
-		waitString="名字\t性别\t年龄\n";
+		waitString="名字\t性别\t年龄\t病人号码\n";
 		for(patientInfo mp:myWaitPatient){
-			waitString+=(mp.name+"\t"+mp.sex+"\t"+mp.age+"\n");		
+			waitString+=(mp.name+"\t"+mp.sex+"\t"+mp.age+"\t"+mp.id+"\n");		
 		}
 		Doctor.wait.setText(waitString);
 		Doctor.currentString="";
 		sendMedicineInfo="";
 		Doctor.content.setText("");
+	}
+	
+	static public void nextFunctioin(){
+		if(myWaitPatient.size()==0){
+			return;
+		}
+		patientInfo p=myWaitPatient.get(0);
+		myWaitPatient.remove(0);
+		myWaitPatient.add(p);
+		updatePaitenInfo();
+		
+		p=myWaitPatient.get(0);
+		Doctor.name.setText(p.name);
+		Doctor.sex.setText(p.sex);
+		Doctor.age.setText(p.age);
+		Doctor.ID.setText(p.id);
 	}
 
 }
