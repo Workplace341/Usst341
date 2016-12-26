@@ -11,15 +11,15 @@ import java.util.ArrayList;
 public class clientAdminThread extends Thread {
 	class medicineDetail{
 		String name;
-		int count;
-		int price;
+		String count;
+		String price;
 	}
 	class accountDetail{
 		String account;
 		String password;
 		String name;
 		String department;
-		int age;
+		String age;
 		String sex;
 	}
 	private Socket server;
@@ -27,8 +27,13 @@ public class clientAdminThread extends Thread {
     private BufferedReader br;
     static public ArrayList<medicineDetail> medicine1=new ArrayList<medicineDetail>();
     static public ArrayList<accountDetail> account1=new ArrayList<accountDetail>();
+    static public String medicineInfo="";
+    static public String accountInfo="";
 	clientAdminThread(Socket server){
 		this.server=server;	    
+	}
+	public clientAdminThread() {
+		// TODO Auto-generated constructor stub
 	}
 	@Override
 	public void run() {
@@ -36,12 +41,12 @@ public class clientAdminThread extends Thread {
 		try {
 			while(true){
 				message=br.readLine();
-				analysis(message);  //∑÷Œˆ ˝æ›
-				System.out.println("¥”∑˛ŒÒ∆˜ ’µΩ≤°»Àµƒ–≈œ¢£∫"+message);   
+				analysis(message); 
+				System.out.println(""+message);   
 				}
 								
 		} catch (IOException e) {
-			           //¡¨Ω” ß∞‹
+			           
 			e.printStackTrace();
 		}
 	}
@@ -58,12 +63,12 @@ public class clientAdminThread extends Thread {
 				medicineDetail a=new medicineDetail();
 				String content[]=medicine[i].split(",");
 				a.name=content[0];
-				a.count=Integer.parseInt(content[1]);
-				a.price=Integer.parseInt(content[2]);
+				a.count=content[1];
+				a.price=content[2];
 				medicine1.add(a);
 			}
 		}
-		 if(kind[1]=="account")
+		else if(kind[1]=="account")
 		{
 			String[] account=kind[1].split("#");
 			
@@ -75,12 +80,29 @@ public class clientAdminThread extends Thread {
 				a.password=content[1];
 				a.name=content[2];
 				a.department=content[3];
-				a.age=Integer.parseInt(content[4]);
+				a.age=content[4];
 				a.sex=content[5];
 				
 				account1.add(a);
 			}
 		}
+		for(int i=0;i<medicine1.size();i++)
+		{
+			medicineInfo=medicineInfo+medicine1.get(i).name+"\t";
+			medicineInfo=medicineInfo+medicine1.get(i).count+"\t";
+			medicineInfo=medicineInfo+medicine1.get(i).price+"\n";
+			
+		}
+		for(int i=0;i<account1.size();i++)
+		{
+			accountInfo=accountInfo+account1.get(i).account+"\t";
+			accountInfo=accountInfo+account1.get(i).password+"\t";
+			accountInfo=accountInfo+account1.get(i).name+"\t";
+			accountInfo=accountInfo+account1.get(i).department+"\t";
+			accountInfo=accountInfo+account1.get(i).age+"\t";
+			accountInfo=accountInfo+account1.get(i).sex+"\n";
+		}
+		 
 		
 		
 		
