@@ -6,9 +6,11 @@ import java.awt.Point;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
@@ -18,6 +20,7 @@ import java.net.Socket;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import javax.swing.DropMode;
 
 public class Client extends JFrame {
 
@@ -25,7 +28,8 @@ public class Client extends JFrame {
 	private final int PORT=12000;
 	private JPanel contentPane;
 	private JTextField account;
-	private JTextField password;
+//	private JTextField password;
+	JPasswordField password;
     private ButtonGroup bg=new ButtonGroup();
     private Socket socket;
     private PrintWriter pw;
@@ -63,6 +67,7 @@ public class Client extends JFrame {
 			         //”Î∑˛ŒÒ∆˜¡¨Ω” ß∞‹
 			e.printStackTrace();
 		}
+		this.setTitle("µ«¬ºøÕªß∂À");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(500, 200, 650, 450);
 		contentPane = new JPanel();
@@ -83,7 +88,8 @@ public class Client extends JFrame {
 		label_1.setBounds(232, 202, 48, 15);
 		contentPane.add(label_1);
 		
-		password = new JTextField();
+		password = new JPasswordField();
+		//password = new JTextField();
 		password.setBounds(290, 202, 104, 21);
 		password.setColumns(10);
 		contentPane.add(password);
@@ -120,6 +126,12 @@ public class Client extends JFrame {
 		button.setBounds(325, 313, 93, 23);
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if(account.getText().equals("")||password.getText().equals("")){
+					JOptionPane.showMessageDialog(contentPane,"«Î ‰»Î’À∫≈√‹¬Î");
+					return ;
+				}
+				
+				
 				if(charge.isSelected()){
 					login("charge");
 				}
@@ -176,6 +188,12 @@ public class Client extends JFrame {
 				case "admin":new Admin(p).setVisible(true);cat =new ClientAdminThread(socket);cat.start();break;
 				case "president":new Charge(p).setVisible(true);cpt =new ClientPresidentThread(socket);cpt.start();break;
 				default :break;
+				}
+			}
+			else{
+				if(account.getText().equals("")||password.getText().equals("")){
+					JOptionPane.showMessageDialog(contentPane,"’À∫≈ªÚ√‹¬Î¥ÌŒÛ");
+					return ;
 				}
 			}
 		} catch (IOException e) {

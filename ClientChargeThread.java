@@ -84,7 +84,8 @@ public class ClientChargeThread extends Thread {
      private void analysis(String message){
     	 String string[]=message.split(",");
     	 if(string[0].equals("noDoctor")){
-    		 Charge.notice.setText("没有合适的医生");
+    		 Charge.notice.setText("所选择的科室目前没有医生");
+    		 Charge.notice.setText("所选择的科室目前没有医生");
     	 }
     	 else if(string[0].equals("chooseDoctor")){
     		 String noti="请去"+string[2]+"找"+string[1]+"医生";
@@ -159,7 +160,7 @@ public class ClientChargeThread extends Thread {
 		PredictPatientInfo p=myPredictPatinetInfo.get(0);
 		Send(p.department, p.name, p.sex, p.age);
 		
-		myPredictPatinetInfo.remove(0);
+		//myPredictPatinetInfo.remove(0);
 	}
 	
 	static public void updatePredictPatienInfo(){

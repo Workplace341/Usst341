@@ -14,6 +14,8 @@ import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.Point;
 
@@ -131,6 +133,10 @@ public class Charge extends JFrame {
 		JButton btnNewButton_3 = new JButton("\u4ED8\u6B3E");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if(ClientChargeThread.myChargePatientInfo.size()==0){
+					JOptionPane.showMessageDialog(contentPane,"当前没有付款信息");
+					return ;								
+				}
 				ClientChargeThread.sendPayInfo();
 				ClientChargeThread.myChargePatientInfo.remove(0);
 				if(ClientChargeThread.myChargePatientInfo.size()!=0){
@@ -249,27 +255,29 @@ public class Charge extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(ClientChargeThread.myPredictPatinetInfo.size()==0){
+					JOptionPane.showMessageDialog(contentPane,"当前没有挂号信息");
 					return;
 				}
 				ClientChargeThread.sendPredictInfo();
-				ClientChargeThread.updatePredictPatienInfo();
-				if(ClientChargeThread.myPredictPatinetInfo.size()!=0){
-					ClientChargeThread.PredictPatientInfo p=ClientChargeThread.myPredictPatinetInfo.get(0);
-					Charge.pname.setText(p.name);
-					Charge.psex.setText(p.sex);
-					Charge.page.setText(p.age);
-					Charge.pdepart.setText(p.department);
-				}
-				else{
-					Charge.pname.setText("");
-					Charge.psex.setText("");
-					Charge.page.setText("");
-					Charge.pdepart.setText("");
-				}
-				Charge.pnotice.setText("挂号通知");
+				//if
+//				ClientChargeThread.updatePredictPatienInfo();
+//				if(ClientChargeThread.myPredictPatinetInfo.size()!=0){
+//					ClientChargeThread.PredictPatientInfo p=ClientChargeThread.myPredictPatinetInfo.get(0);
+//					Charge.pname.setText(p.name);
+//					Charge.psex.setText(p.sex);
+//					Charge.page.setText(p.age);
+//					Charge.pdepart.setText(p.department);
+//				}
+//				else{
+//					Charge.pname.setText("");
+//					Charge.psex.setText("");
+//					Charge.page.setText("");
+//					Charge.pdepart.setText("");
+//				}
+//				Charge.pnotice.setText("挂号通知");
 			}
 		});
-		btnNewButton.setBounds(77, 342, 81, 37);
+		btnNewButton.setBounds(77, 342, 99, 37);
 		panel_1.add(btnNewButton);
 		
 		JButton button_1 = new JButton("\u8FD4\u56DE");
@@ -280,7 +288,7 @@ public class Charge extends JFrame {
 	    		//Charge.pnotice.setText(noti);
 			}
 		});
-		button_1.setBounds(431, 342, 91, 37);
+		button_1.setBounds(431, 342, 99, 37);
 		panel_1.add(button_1);
 		
 		JLabel label_3 = new JLabel("\u5F53\u524D\u64CD\u4F5C\u7684\u4EBA");
@@ -344,13 +352,13 @@ public class Charge extends JFrame {
 		label_15.setBounds(363, 10, 179, 30);
 		panel_1.add(label_15);
 		
-		JButton button_5 = new JButton("\u53D6\u6D88\u6302\u53F7");
+		JButton button_5 = new JButton("\u5220\u9664");
 		button_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ClientChargeThread.cancelPredictFunction();
 			}
 		});
-		button_5.setBounds(198, 342, 81, 37);
+		button_5.setBounds(198, 342, 91, 37);
 		panel_1.add(button_5);
 		
 		JButton button_6 = new JButton("\u8DF3\u8FC7");
@@ -359,13 +367,13 @@ public class Charge extends JFrame {
 				ClientChargeThread.nextPredictFunction();
 			}
 		});
-		button_6.setBounds(316, 342, 81, 37);
+		button_6.setBounds(316, 342, 91, 37);
 		panel_1.add(button_6);
 		
 		pnotice = new JLabel("\u6302\u53F7\u901A\u77E5");
 		pnotice.setHorizontalAlignment(SwingConstants.CENTER);
 		pnotice.setFont(new Font("微软雅黑", Font.PLAIN, 25));
-		pnotice.setBounds(204, 282, 179, 30);
+		pnotice.setBounds(75, 280, 455, 30);
 		panel_1.add(pnotice);
 		
 		
@@ -397,6 +405,11 @@ public class Charge extends JFrame {
 		JButton btnNewButton_1 = new JButton("\u786E\u5B9A\u6302\u53F7");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if(name.getText().equals("")||sex.getText().equals("")||age.getText().equals("")){
+					JOptionPane.showMessageDialog(contentPane,"输入错误");
+					return ;
+				}
+				
 				String department = null;
 				if(internal.isSelected()){
 					department="internal";
