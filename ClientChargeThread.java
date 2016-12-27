@@ -198,5 +198,44 @@ public class ClientChargeThread extends Thread {
 		Charge.ID.setText(p.id);
 		Charge.pay.setText("需要支付"+p.price+"元");
 	}
+	
+	static public void nextPredictFunction(){
+		if(myPredictPatinetInfo.size()==0){
+			return;
+		}
+		PredictPatientInfo p=myPredictPatinetInfo.get(0);
+		myPredictPatinetInfo.remove(0);
+		myPredictPatinetInfo.add(p);
+		updatePredictPatienInfo();
+		
+		p=myPredictPatinetInfo.get(0);
+		Charge.pname.setText(p.name);
+		Charge.psex.setText(p.sex);
+		Charge.page.setText(p.age);
+		Charge.pdepart.setText(p.department);
+	}
+	
+	static public void cancelPredictFunction(){
+		if(myPredictPatinetInfo.size()==0){
+			return;
+		}
+		myPredictPatinetInfo.remove(0);
+		updatePredictPatienInfo();
+		
+		if(myPredictPatinetInfo.size()!=0){
+			PredictPatientInfo p=myPredictPatinetInfo.get(0);
+			Charge.pname.setText(p.name);
+			Charge.psex.setText(p.sex);
+			Charge.page.setText(p.age);
+			Charge.pdepart.setText(p.department);
+		}
+		else{
+			Charge.pname.setText("");
+			Charge.psex.setText("");
+			Charge.page.setText("");
+			Charge.pdepart.setText("");
+		}
+		
+	}
 
 }

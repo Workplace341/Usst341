@@ -12,6 +12,8 @@ import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.Point;
+
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
@@ -34,25 +36,28 @@ public class Doctor extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Doctor frame = new Doctor();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					Doctor frame = new Doctor("doctorName","department");
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
 	 */
-	public Doctor() {
+	public Doctor(String doctorName,String depart,Point p) {
+		this.setLocation(p);
+		this.setTitle("医生名字："+doctorName+"           所在科室："+depart);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 650, 450);
+		//setBounds(100, 100, 650, 450);
+		this.setSize(650, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -156,6 +161,9 @@ public class Doctor extends JFrame {
 		next.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(currentString.equals("")){
+					return;
+				}
+				if(ClientDoctorThread.myWaitPatient.size()==0){
 					return;
 				}
 				String str=name.getText()+","+sex.getText()+","+age.getText()+","+ClientDoctorThread.myWaitPatient.get(0).id+"#";

@@ -9,6 +9,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Point;
+
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -29,26 +31,28 @@ public class Store extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Store frame = new Store();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					Store frame = new Store();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
 	 */
-	public Store() {
+	public Store(Point p) {
+		this.setLocation(p);
 		this.setTitle("药房客户端");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 650, 450);
+		//setBounds(100, 100, 650, 450);
+		this.setSize(650, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -130,7 +134,9 @@ public class Store extends JFrame {
 				if(ClientStoreThread.myWaitPatient.size()==0){
 					return;
 				}
-				
+				if(!mark.getText().equals("此病人已付款")){
+					return;
+				}
 				ClientStoreThread.sendInfo();
 				ClientStoreThread.updatePaitenInfo();
 				ClientStoreThread.showCurrentMedicineInfo();
@@ -141,15 +147,19 @@ public class Store extends JFrame {
 					Store.sage.setText(cs.age);
 					Store.ID.setText(cs.id);
 					if(cs.isPay){
-						Store.mark.setText("此病人已经付款");
+						Store.mark.setText("此病人已付款");
 					}
 					else{
 						Store.mark.setText("尚未付款");
-					}
-					
+					}			
 				}
-					
-				
+				else{
+					Store.sname.setText("");
+					Store.ssex.setText("");
+					Store.sage.setText("");
+					Store.ID.setText("");
+					Store.mark.setText("付款通知");
+				}
 			}
 		});
 		button_1.setBounds(327, 347, 106, 35);

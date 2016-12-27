@@ -2,6 +2,7 @@ package client;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Point;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,10 +16,12 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
+import java.awt.Font;
 
 public class Client extends JFrame {
 
-	private final String IP="10.40.140.14";//"192.168.1.107";//"10.20.160.19";////"172.30.42.6";
+	private final String IP="192.168.1.107";//"10.20.179.1";//"10.40.140.14";////"10.20.160.19";////"172.30.42.6";
 	private final int PORT=12000;
 	private JPanel contentPane;
 	private JTextField account;
@@ -61,7 +64,7 @@ public class Client extends JFrame {
 			e.printStackTrace();
 		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 650, 450);
+		setBounds(500, 200, 650, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -85,31 +88,24 @@ public class Client extends JFrame {
 		password.setColumns(10);
 		contentPane.add(password);
 		
-		
-		
-		
-		JButton button_1 = new JButton("\u9884\u7EA6");
-		button_1.setBounds(252, 138, 93, 23);
-		contentPane.add(button_1);
-		
 		JRadioButton doctor = new JRadioButton("\u533B\u751F");
-		doctor.setBounds(142, 242, 66, 23);
+		doctor.setBounds(186, 242, 66, 23);
 		contentPane.add(doctor);
 		
 		JRadioButton charge = new JRadioButton("\u6536\u8D39\u4EBA\u5458",true);
-		charge.setBounds(232, 242, 88, 23);
+		charge.setBounds(282, 242, 104, 23);
 		contentPane.add(charge);
 		
 		JRadioButton store = new JRadioButton("\u836F\u5E08");
-		store.setBounds(322, 242, 66, 23);
+		store.setBounds(398, 242, 88, 23);
 		contentPane.add(store);
 		
 		JRadioButton admin = new JRadioButton("\u7BA1\u7406\u5458");
-		admin.setBounds(390, 242, 66, 23);
+		admin.setBounds(282, 267, 90, 23);
 		contentPane.add(admin);
 		
 		JRadioButton president = new JRadioButton("\u9662\u957F");
-		president.setBounds(482, 242, 66, 23);
+		president.setBounds(186, 267, 79, 23);
 		contentPane.add(president);
 		
 		
@@ -121,7 +117,7 @@ public class Client extends JFrame {
 		bg.add(admin);
 		
 		JButton button = new JButton("\u767B\u5F55");
-		button.setBounds(301, 292, 93, 23);
+		button.setBounds(325, 313, 93, 23);
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(charge.isSelected()){
@@ -137,11 +133,26 @@ public class Client extends JFrame {
 					login("admin");
 				}
 				else if(president.isSelected()){
-					login("predident");
+					login("president");
 				}
 			}
 		});
 		contentPane.add(button);
+		
+		JLabel lblNewLabel = new JLabel("\u533B\u9662\u7CFB\u7EDF\u767B\u5F55\u754C\u9762");
+		lblNewLabel.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 30));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(165, 32, 321, 82);
+		contentPane.add(lblNewLabel);
+		
+		JButton btnNewButton = new JButton("\u9000\u51FA");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
+		btnNewButton.setBounds(196, 313, 93, 23);
+		contentPane.add(btnNewButton);
 	}
 	
 	public void login(String type){
@@ -151,16 +162,19 @@ public class Client extends JFrame {
 		System.out.println(type+","+acc+","+pas);
 		pw.flush();
 		try {
-			String sign=br.readLine();
-			System.out.println("sign:"+sign);
-			if(sign.equals("OK")){
+			String t=br.readLine();
+			System.out.println(t);
+			String[] sign=t.split(",");
+			System.out.println("sign:"+sign[0]);
+			if(sign[0].equals("OK")){
+				Point p=this.getLocation();
 				setVisible(false);
 				switch(type){
-				case "charge":new Charge().setVisible(true);cct=new ClientChargeThread(socket);cct.start();break;
-				case "doctor":new Doctor().setVisible(true);cdt=new ClientDoctorThread(socket);cdt.start();break;
-				case "store":new Store().setVisible(true);cst =new ClientStoreThread(socket);cst.start();break;
-				case "admin":new Charge().setVisible(true);cat =new ClientAdminThread(socket);cat.start();break;
-				case "president":new Charge().setVisible(true);cpt =new ClientPresidentThread(socket);cpt.start();break;
+				case "charge":new Charge(p).setVisible(true);cct=new ClientChargeThread(socket);cct.start();break;
+				case "doctor":new Doctor(sign[1],sign[2],p).setVisible(true);cdt=new ClientDoctorThread(socket);cdt.start();break;
+				case "store":new Store(p).setVisible(true);cst =new ClientStoreThread(socket);cst.start();break;
+				case "admin":new Admin(p).setVisible(true);cat =new ClientAdminThread(socket);cat.start();break;
+				case "president":new Charge(p).setVisible(true);cpt =new ClientPresidentThread(socket);cpt.start();break;
 				default :break;
 				}
 			}
@@ -170,7 +184,4 @@ public class Client extends JFrame {
 		}	
 			
 	}		
-			
-		
-	
 }

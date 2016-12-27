@@ -15,6 +15,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Point;
+
 import javax.swing.SwingConstants;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
@@ -42,26 +44,28 @@ public class Charge extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Charge frame = new Charge();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					Charge frame = new Charge();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
 	 */
-	public Charge() {
+	public Charge(Point p) {
+		this.setLocation(p);
 		this.setTitle("ÊÕ·Ñ¿Í»§¶Ë");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 650, 450);
+		//setBounds(100, 100, 650, 450);
+		this.setSize(650, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -149,7 +153,7 @@ public class Charge extends JFrame {
 				
 			}
 		});
-		btnNewButton_3.setBounds(277, 333, 106, 35);
+		btnNewButton_3.setBounds(109, 333, 106, 35);
 		panel_2.add(btnNewButton_3);
 		
 		JButton button_3 = new JButton("\u8FD4\u56DE");
@@ -158,62 +162,51 @@ public class Charge extends JFrame {
 				card.show(contentPane, "main");
 			}
 		});
-		button_3.setBounds(509, 333, 106, 35);
+		button_3.setBounds(400, 333, 106, 35);
 		panel_2.add(button_3);
 		
 		cage = new JTextField();
 		cage.setEditable(false);
 		cage.setColumns(10);
-		cage.setBounds(135, 113, 106, 21);
+		cage.setBounds(123, 123, 106, 21);
 		panel_2.add(cage);
-		
-		JTextArea content = new JTextArea();
-		content.setEditable(false);
-		content.setBounds(10, 217, 231, 174);
-		panel_2.add(content);
-		
-		JLabel label_4 = new JLabel("\u836F\u54C1\u4FE1\u606F");
-		label_4.setHorizontalAlignment(SwingConstants.CENTER);
-		label_4.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 25));
-		label_4.setBounds(36, 177, 179, 30);
-		panel_2.add(label_4);
 		
 		wait = new JTextArea();
 		wait.setEditable(false);
-		wait.setBounds(277, 41, 343, 201);
+		wait.setBounds(265, 51, 343, 201);
 		panel_2.add(wait);
 		
 		csex = new JTextField();
 		csex.setEditable(false);
 		csex.setColumns(10);
-		csex.setBounds(135, 82, 106, 21);
+		csex.setBounds(123, 92, 106, 21);
 		panel_2.add(csex);
 		
 		cname = new JTextField();
 		cname.setEditable(false);
 		cname.setColumns(10);
-		cname.setBounds(135, 51, 106, 21);
+		cname.setBounds(123, 61, 106, 21);
 		panel_2.add(cname);
 		
 		JLabel label_5 = new JLabel("\u5F53\u524D\u4ED8\u6B3E\u7684\u4EBA");
 		label_5.setHorizontalAlignment(SwingConstants.CENTER);
 		label_5.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 25));
-		label_5.setBounds(36, 0, 179, 30);
+		label_5.setBounds(24, 10, 179, 30);
 		panel_2.add(label_5);
 		
 		JLabel label_6 = new JLabel("\u59D3\u540D\uFF1A");
 		label_6.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
-		label_6.setBounds(22, 52, 54, 15);
+		label_6.setBounds(10, 62, 54, 15);
 		panel_2.add(label_6);
 		
 		JLabel label_7 = new JLabel("\u6027\u522B\uFF1A");
 		label_7.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
-		label_7.setBounds(22, 82, 54, 16);
+		label_7.setBounds(10, 92, 54, 16);
 		panel_2.add(label_7);
 		
 		JLabel label_8 = new JLabel("\u5E74\u9F84\uFF1A");
 		label_8.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
-		label_8.setBounds(22, 114, 54, 15);
+		label_8.setBounds(10, 124, 54, 15);
 		panel_2.add(label_8);
 		
 		JButton button_4 = new JButton("\u4E0B\u4E00\u4E2A");
@@ -222,30 +215,30 @@ public class Charge extends JFrame {
 				 ClientChargeThread.nextFunction();
 			}
 		});
-		button_4.setBounds(393, 333, 106, 35);
+		button_4.setBounds(256, 333, 106, 35);
 		panel_2.add(button_4);
 		
 		JLabel label_9 = new JLabel("\u5F53\u524D\u7B49\u5F85\u961F\u5217");
 		label_9.setHorizontalAlignment(SwingConstants.CENTER);
 		label_9.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 25));
-		label_9.setBounds(360, 1, 179, 30);
+		label_9.setBounds(348, 11, 179, 30);
 		panel_2.add(label_9);
 		
 		pay = new JLabel("\u9700\u4ED8\u6B3E");
 		pay.setHorizontalAlignment(SwingConstants.CENTER);
 		pay.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 25));
-		pay.setBounds(322, 273, 251, 30);
+		pay.setBounds(147, 273, 251, 30);
 		panel_2.add(pay);
 		
 		ID = new JTextField();
 		ID.setEditable(false);
 		ID.setColumns(10);
-		ID.setBounds(135, 144, 106, 21);
+		ID.setBounds(123, 154, 106, 21);
 		panel_2.add(ID);
 		
 		JLabel label_10 = new JLabel("\u75C5\u4EBA\u53F7\u7801\uFF1A");
 		label_10.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
-		label_10.setBounds(22, 145, 106, 17);
+		label_10.setBounds(10, 155, 106, 17);
 		panel_2.add(label_10);
 		
 		JPanel panel_1 = new JPanel();
@@ -354,12 +347,18 @@ public class Charge extends JFrame {
 		JButton button_5 = new JButton("\u53D6\u6D88\u6302\u53F7");
 		button_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ClientChargeThread.cancelPredictFunction();
 			}
 		});
 		button_5.setBounds(198, 342, 81, 37);
 		panel_1.add(button_5);
 		
 		JButton button_6 = new JButton("\u8DF3\u8FC7");
+		button_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ClientChargeThread.nextPredictFunction();
+			}
+		});
 		button_6.setBounds(316, 342, 81, 37);
 		panel_1.add(button_6);
 		
@@ -373,22 +372,27 @@ public class Charge extends JFrame {
 		
 		JLabel lable111 = new JLabel("\u79D1\uFF1A");
 		lable111.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 18));
-		lable111.setBounds(176, 267, 54, 15);
+		lable111.setBounds(176, 265, 54, 15);
 		panel.add(lable111);
 		
 		JRadioButton internal = new JRadioButton("\u5185\u79D1",true);
-		internal.setBounds(276, 265, 54, 23);
+		internal.setBounds(259, 265, 64, 23);
 		panel.add(internal);
 		
 		JRadioButton surgery = new JRadioButton("\u5916\u79D1");
-		surgery.setBounds(341, 265, 54, 23);
+		surgery.setBounds(343, 265, 72, 23);
 		panel.add(surgery);
+		
+		JRadioButton paediatrics = new JRadioButton("\u513F\u79D1");
+		paediatrics.setBounds(427, 265, 121, 23);
+		panel.add(paediatrics);
 		
 		//JRadioButton radioButton_2 = new JRadioButton("\u4E13\u79D1");
 	//	radioButton_2.setBounds(409, 265, 54, 23);
 		//panel.add(radioButton_2);
 		bg.add(surgery);
 		bg.add(internal);
+		bg.add(paediatrics);
 		
 		JButton btnNewButton_1 = new JButton("\u786E\u5B9A\u6302\u53F7");
 		btnNewButton_1.addActionListener(new ActionListener() {
@@ -399,6 +403,9 @@ public class Charge extends JFrame {
 				}
 				else if(surgery.isSelected()){
 					department="surgery";
+				}
+				else if(paediatrics.isSelected()){
+					department="paediatrics";
 				}
 				ClientChargeThread.Send(department, name.getText(), sex.getText(), age.getText());
 				notice.setText("µÈ´ý¹ÒºÅÐÅÏ¢");
