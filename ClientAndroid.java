@@ -7,7 +7,7 @@ import java.net.UnknownHostException;
 
 public class ClientAndroid extends Thread {
 
-	final String IP="10.40.140.14";//"192.168.1.107";
+	final String IP="192.168.1.107";//"10.20.179.1";//"10.40.140.14";//"192.168.1.107";
 	final int PORT=12000;
 	static public PrintWriter pw;
 	private BufferedReader br;

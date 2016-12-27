@@ -45,12 +45,16 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				String info="predict,";
-				String depart=department.getText().toString();
+				//String depart=department.getText().toString();
 				String sname=name.getText().toString();
 				String ssex=sex.getText().toString();
 				String sage=age.getText().toString();
 				String sdepart=department.getText().toString();
-				if(depart.equals("b")||depart.equals("外科")){
+//				if(sname.equals("")||ssex.equals("")||sage.equals("")){
+//					return;
+//				}
+					
+				if(sdepart.equals("surgery")||sdepart.equals("外科")){
 					s=sname+","+ssex+","+sage+",surgery";
 					//new Thread(){
 					//	public void run() {
@@ -60,7 +64,16 @@ public class MainActivity extends Activity {
 					//notice.setText("预约成功");
 				Toast.makeText(MainActivity.this, "预约成功", Toast.LENGTH_LONG).show();
 				}
-				
+				else if(sdepart.equals("internal")||sdepart.equals("内科")){
+					s=sname+","+ssex+","+sage+",internal";
+					ClientAndroid.sendInfo(MainActivity.s);
+					Toast.makeText(MainActivity.this, "预约成功", Toast.LENGTH_LONG).show();
+				}
+				else if(sdepart.equals("paediatrics")||sdepart.equals("儿科")){
+					s=sname+","+ssex+","+sage+",paediatrics";
+					ClientAndroid.sendInfo(MainActivity.s);
+					Toast.makeText(MainActivity.this, "预约成功", Toast.LENGTH_LONG).show();
+				}
 			}
 		});
 		
