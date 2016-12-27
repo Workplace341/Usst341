@@ -11,7 +11,7 @@ public class ShowThread extends Thread {
 	Socket client;
 	
 	BufferedReader br;
-	static PrintWriter pw;
+	 PrintWriter pw;
 	public ShowThread(Socket client) {
 		this.client=client;
 		try {
@@ -21,6 +21,7 @@ public class ShowThread extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		sendMessageToShow();
 	}
 	@Override
 	public void run() {
@@ -31,9 +32,9 @@ public class ShowThread extends Thread {
 			analysis(info);  //分析数据
 			}
 		} catch (IOException e) {
-			          //与客户端连接失败
-			e.printStackTrace(); 
-			//break;  
+			
+			Server.myShow.remove(this);
+			e.printStackTrace();
 		}
 	}
 	private void analysis(String info) {
@@ -42,7 +43,27 @@ public class ShowThread extends Thread {
 	}
 
 	
-	public void sendMessageToPresident(){
+	 public void sendMessageToShow(){
+		String surgery="surgery-";
+		String internal="internal-";
+		String paediatrics="paediatrics-";
+		for(Server.DoctorInfo d:Server.onlineDoctor){
+			if(d.department.equals("surgery")){
+				surgery+=(d.name+",");
+				surgery+=(d.waitCount+"=");
+			}
+			else if(d.department.equals("internal")){
+				internal+=(d.name+",");
+				internal+=(d.waitCount+"=");
+			}
+			else if(d.department.equals("paediatrics")){
+				paediatrics+=(d.name+",");
+				paediatrics+=(d.waitCount+"=");
+			}
+		}
 		
+		pw.println(surgery+"#"+internal+"#"+paediatrics);
+		System.out.println("发送信息给滚动大屏："+surgery+"#"+internal+"#"+paediatrics);
+		pw.flush();
 	}
 }

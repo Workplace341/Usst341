@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.stream.Collector.Characteristics;
 
 public class StoreThread extends Thread {
 	Socket client;
@@ -32,6 +33,7 @@ public class StoreThread extends Thread {
 			while(true){
 			info=br.readLine();
 			analysis(info);  //分析数据
+			System.out.println("服务器从仓库收到信息："+info);
 			}
 		} catch (IOException e) {
 			          //与客户端连接失败
@@ -39,11 +41,22 @@ public class StoreThread extends Thread {
 			//break;  
 		}	}
 	
-	//info=boolean,id#...+...
+	//info=boolean,price,name,sex,age,id#medicine,count-..
 	private void analysis(String info) {
-		String str[]=info.split(",");
-		if(str[0].equals("true")){
-			ChargeThread.allPatient.remove(str[1]);
+		String str[]=info.split("#");
+		String property[]=str[0].split(",");
+		if(property[0].equals("true")){
+			
+			String Minfo[]=str[1].split("-");
+			for(String s:Minfo){
+				String m[]=s.split(",");
+				SQLOperate.declineMedicineCount(m[0], Integer.parseInt(m[1]));
+			}
+			System.out.println(ChargeThread.patientDepart.get(property[5]));
+			
+			
+			ChargeThread.allPatient.remove(property[5]);
+			ChargeThread.patientDepart.remove(property[5]);
 		}
 	
 	}

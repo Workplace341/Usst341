@@ -7,15 +7,16 @@ import java.util.*;
 
 public class Server {
 
-	class DoctorInfo{
+	static public class DoctorInfo{
 		String account;
 		String name;
 		String department;
 		int waitCount;
 		ArrayList<String> patientQueue=new ArrayList<String>();	
 	}
-	public static class medicineInfo{
-		medicineInfo(String name,int count,int price){
+	
+	public static class MedicineInfo{
+		MedicineInfo(String name,int count,int price){
 			this.name=name;
 			this.count=count;
 			this.price=price;
@@ -26,17 +27,24 @@ public class Server {
 	}
 	
 	
+	
+	
+	
 	ServerSocket server;
 	static Socket charge;
 	static Socket store;
 	static Socket client;
+	static Socket president;
+	static Socket admin;
 	
 	
 	static int internalCount;//内科排队人数
 	static int surgeryCount; //外科排队人数
+	static int paediatricsCount; //外科排队人数
 	static public HashMap<String,Socket> doctorSocket =new HashMap<String,Socket>();
 	static public ArrayList<DoctorInfo> onlineDoctor=new ArrayList<DoctorInfo>();
-    
+    static public ArrayList<ShowThread> myShow=new ArrayList<ShowThread>();
+	
 	private String command;
 	static public ResultSet rs=null;
 	static public Statement st = null;
@@ -44,13 +52,11 @@ public class Server {
 	
 	
 	
+
 	
 	
-	
-	
-	
-	
-	Server(){                      //构造函数
+	Server(){     
+		//构造函数
 		//加载数据库驱动程序
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -62,6 +68,7 @@ public class Server {
 		String str="jdbc:sqlserver://localhost:1433;databaseName=medical";
 		try {
 			con = DriverManager.getConnection(str,"sa","199511");
+			
 		} catch (SQLException e) {
 			                              //连接失败
 			e.printStackTrace();
@@ -69,6 +76,10 @@ public class Server {
 		if(con!=null){
 			System.out.println("数据库连接成功");
 		}
+		new SQLOperate(con);
+		
+	
+		
 		
 		
 		
@@ -98,10 +109,7 @@ public class Server {
 					}
 				}).start();
 					
-		   
-									
-				
-				
+			
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -134,10 +142,21 @@ public class Server {
 	public boolean analysis(String info, Socket client){
 		
 		String[] string=info.split(",");
+		if(string[0].equals("predict")){
+			new AndroidThread(client).start();
+			return true;
+		}
+		else if(string[0].equals("show")){
+			
+			ShowThread s=new ShowThread(client);
+			s.start();
+			myShow.add(s);
+			return true;
+		}
 		String account=string[1];
 		String password=string[2];
 		PrintWriter pw;
-		if(!login(account,password)){// 登录，如果账号密码正确，则进入下一步开始线程
+		if(!SQLOperate.login(string[0],account,password)){// 登录，如果账号密码正确，则进入下一步开始线程
 			
 			
 			try {
@@ -154,7 +173,15 @@ public class Server {
 		
 		try {
 			pw = new PrintWriter(client.getOutputStream());
-			pw.println("OK");
+			String sign="OK,";	
+			if(string[0].equals("doctor")){
+				doctorSocket.put(string[1], client); 
+				SQLOperate.addOnlineDoctorInfo(string[1]);                                     //update在线医生信息
+				Server.sendMessageToShow();     //发信息给滚动屏
+				sign+=findDoctorName(string[1]);
+				System.out.println(sign);
+			}
+			pw.println(sign);
 	    	pw.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -168,46 +195,79 @@ public class Server {
 			
 		}		
 		else if(string[0].equals("doctor")){
-			doctorSocket.put(string[1], client); 
-			 addOnlineDoctorInfo(string[1]);                                     //update在线医生信息
+//			doctorSocket.put(string[1], client); 
+//			 SQLOperate.addOnlineDoctorInfo(string[1]);                                     //update在线医生信息
+//			 ShowThread.sendMessageToShow();
 			new DoctorThread(string[1],client).start();  //开启医生线程
 		}
 		else if(string[0].equals("store")){
 			store=client;
 			new StoreThread(client).start();
 		}
+		else if(string[0].equals("president")){
+			president=client;
+			new PresidentThread(client).start();
+		}
+		else if(string[0].equals("admin")){
+			admin=client;
+			new AdminThread(client).start();
+		}
 		return true;
 	}
 	
-	private void addOnlineDoctorInfo(String string) {
-		                            //读数据库 医生信息表
-		if(string.equals("123")){
-			DoctorInfo di=new DoctorInfo();
-			di.name="张三";
-			di.waitCount=0;
-			di.department="surgery";
-			di.account=string;
-			onlineDoctor.add(di);
-		}else if(string.equals("456")){
-			DoctorInfo di=new DoctorInfo();
-			di.name="李四";
-			di.waitCount=0;
-			di.department="surgery";
-			di.account=string;
-			onlineDoctor.add(di);
+	private String findDoctorName(String doctorAccount){
+		for(DoctorInfo d:onlineDoctor){
+			if(d.account.equals(doctorAccount));
+			return (d.name+","+d.department);
 		}
 		
-	}
-
-	private boolean login(String account, String password) { //登录函数
-		if(account.equals("123")&&password.equals("abc"))   //读数据库 账号信息表
-			return true;
-		else if(account.equals("456")&&password.equals("abc"))
-			return true;
-		System.out.println("账号密码错误");
-		     return false;
 		
+		return null;	
 	}
+	
+	
+	static public void sendMessageToShow(){
+		for(ShowThread s:myShow){
+			s.sendMessageToShow();
+		}
+	}
+//	private void addOnlineDoctorInfo(String string) {
+//		                            //读数据库 医生信息表
+//		if(string.equals("123")){
+//			DoctorInfo di=new DoctorInfo();
+//			di.name="张三";
+//			di.waitCount=0;
+//			di.department="surgery";
+//			di.account=string;
+//			onlineDoctor.add(di);
+//		}else if(string.equals("456")){
+//			DoctorInfo di=new DoctorInfo();
+//			di.name="李四";
+//			di.waitCount=0;
+//			di.department="surgery";
+//			di.account=string;
+//			onlineDoctor.add(di);
+//		}
+//		
+//	}
+
+//	private boolean login(String type,String account, String password) { //登录函数
+//		
+//		
+//		String command="select * from account where type='";
+//		command+=(type+"' and account='");
+//		command+=(account+"' and password='");
+//		command+=(password+"'");
+//		
+////		if()
+////		if(account.equals("123")&&password.equals("abc"))   //读数据库 账号信息表
+////			return true;
+////		else if(account.equals("456")&&password.equals("abc"))
+////			return true;
+////		System.out.println("账号密码错误");
+//	     return false;
+////		
+//	}
 	
 	public static void main(String[] args) {
 		Server server=new Server();

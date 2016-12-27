@@ -25,8 +25,41 @@ public class SQLOperate {
 		}
 	}
 	
-	static public void updateDoctorIncome(String doctorAccount,int price){
-		String command="update doctor set income=income+"+price+" where account='"+doctorAccount+"'";
+	static public void doctorReadMedicineData() {//从文件读取数据，更新到medicineData
+		try {
+		    
+			Statement st =Server.con.createStatement();
+			ResultSet rs=st.executeQuery("select * from medicine");
+			
+			while(rs.next()){
+				Server.MedicineInfo mi=new Server.MedicineInfo(rs.getString(1).trim(),rs.getInt(2),rs.getInt(3));
+				DoctorThread.medicineData.put(rs.getString(1).trim(), mi);
+			}
+			rs.close();
+			st.close();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
+	static public void updateDoctorRegisterIncome(String doctorAccount){
+		String command="update doctor set income=income+10,registerIncome=registerIncome+10 where account='"+doctorAccount+"'";
+		try {
+			st.execute(command);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	static public void updateDoctorMedicineIncome(String doctorAccount,int price){
+		String command="update doctor set income=income+"+price+" ,medicineIncome=medicineIncome+"+price+" where account='"+doctorAccount+"'";
 		try {
 			st.execute(command);
 			
@@ -211,7 +244,7 @@ public class SQLOperate {
 	
 	static public void addDoctorInfo(String account,String password,String name,String age,String sex,String depart){
 		String command1="insert into account values ('"+account+"','"+password+"','doctor')";
-		String command2="insert into doctor values('"+account+"','"+name+"','"+age+"','"+sex+"','"+depart+"',0)";
+		String command2="insert into doctor values('"+account+"','"+name+"','"+age+"','"+sex+"','"+depart+"',0,0,0)";
 		try {
 			st.execute(command1);
 			st.execute(command2);

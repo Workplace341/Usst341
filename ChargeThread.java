@@ -17,9 +17,13 @@ public class ChargeThread extends Thread {
 		String id;
 		String name;
 		String sex;
-		String age;		
+		String age;	
+		String department;
+		String doctorAccount;
 	}
+	
 	static public HashMap<String,patientInfo> allPatient=new HashMap<String,patientInfo>();
+	static public HashMap<String,String> patientDepart=new HashMap<String,String>();
 	static int id=0;
 	
 	Socket client;
@@ -65,15 +69,21 @@ public class ChargeThread extends Thread {
 	
 
 	private void charge(String info) {
-		String string[]=info.split(",");
+		String s[]=info.split("#");
+		String string[]=s[0].split(",");
 		if(string[0].equals("true")||string[0].equals("false")){
+			//修改数据库部门药品的收入
+			SQLOperate.updateDepartmentMedicineIncome(allPatient.get(string[5]).department, Integer.parseInt(string[1]));
+			SQLOperate.updateDoctorMedicineIncome(allPatient.get(string[5]).doctorAccount, Integer.parseInt(string[1]));
 			String message=info;
 			try {
 				PrintWriter pw= new PrintWriter(Server.store.getOutputStream());
 				//bw = new BufferedWriter(new OutputStreamWriter(Server.store.getOutputStream()));
 				pw.println(message);
 				pw.flush();
-				System.out.println("发送信息给指定药师，付钱情况"+message);
+				System.out.println("发送信息给指定药师，付钱情况:"+message);
+				
+				
 			} catch (IOException e) {
 				         //与选择到的医生连接失败
 				e.printStackTrace();
@@ -86,6 +96,7 @@ public class ChargeThread extends Thread {
 		
 	}
 	
+	//新病人
 	private void newPatient(String info) {
 		String string[]=info.split(",");
 		if(string[0].equals("true")||string[0].equals("false"))
@@ -98,16 +109,25 @@ public class ChargeThread extends Thread {
 			System.out.println("目前没有医生");
 			return;
 		}
+		id++;
 		patientInfo p=new patientInfo();
 		p.id=(id+"");
+		p.department=string[0];
 		p.name=string[1];
 		p.sex=string[2];
 		p.age=string[3];
+		p.doctorAccount=doctor.account;
 		allPatient.put(p.id,p);
-		id++;
-		//message= name(patient),sex,age//,id   发给医生的信息
-		doctor.patientQueue.add(string[1]);
+		System.out.println(string[0]);
+		
+		SQLOperate.updateDepartmentRegisterIncome(string[0]);	  //科室挂号利润增加	
+		SQLOperate.updateDoctorRegisterIncome(p.id);              //医生挂号利润增加
+		
+		//message= name(patient),sex,age,id   发给医生的信息
+		doctor.patientQueue.add(p.id);
 		doctor.waitCount++;
+		Server.sendMessageToShow();     //发信息给滚动屏
+		
 		String message=string[1]+","+string[2]+","+string[3]+","+id;
 		Socket sendSocket=Server.doctorSocket.get(doctor.account);
 		try {
@@ -136,6 +156,9 @@ public class ChargeThread extends Thread {
 		}
 		else if(string[0].equals("surgery")){
 			Server.surgeryCount++;
+		}
+		else if(string[0].equals("paediatrics")){
+			Server.paediatricsCount++;
 		}
 	
 		int min=100;

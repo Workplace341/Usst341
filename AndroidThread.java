@@ -56,8 +56,7 @@ public class AndroidThread extends Thread {
 				e.printStackTrace();
 			}
 			
-		}
-			
+		}		
 			
 	}
 
