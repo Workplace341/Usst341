@@ -44,6 +44,7 @@ public class Server {
 	static public HashMap<String,Socket> doctorSocket =new HashMap<String,Socket>();
 	static public ArrayList<DoctorInfo> onlineDoctor=new ArrayList<DoctorInfo>();
     static public ArrayList<ShowThread> myShow=new ArrayList<ShowThread>();
+    static public ArrayList<DoctorThread> myDoctor=new ArrayList<DoctorThread>();
 	
 	private String command;
 	static public ResultSet rs=null;
@@ -178,8 +179,9 @@ public class Server {
 				doctorSocket.put(string[1], client); 
 				SQLOperate.addOnlineDoctorInfo(string[1]);                                     //update在线医生信息
 				Server.sendMessageToShow();     //发信息给滚动屏
+				//System.out.println("收到的账号名字"+string[1]);
 				sign+=findDoctorName(string[1]);
-				System.out.println(sign);
+			//	System.out.println("发送的名字"+sign);
 			}
 			pw.println(sign);
 	    	pw.flush();
@@ -198,7 +200,9 @@ public class Server {
 //			doctorSocket.put(string[1], client); 
 //			 SQLOperate.addOnlineDoctorInfo(string[1]);                                     //update在线医生信息
 //			 ShowThread.sendMessageToShow();
-			new DoctorThread(string[1],client).start();  //开启医生线程
+			DoctorThread d=new DoctorThread(string[1],client);
+					d.start();  //开启医生线程
+					myDoctor.add(d);
 		}
 		else if(string[0].equals("store")){
 			store=client;
@@ -216,9 +220,12 @@ public class Server {
 	}
 	
 	private String findDoctorName(String doctorAccount){
+		//System.out.println("查找的账号"+doctorAccount);
 		for(DoctorInfo d:onlineDoctor){
-			if(d.account.equals(doctorAccount));
-			return (d.name+","+d.department);
+			if(d.account.equals(doctorAccount)){
+				return (d.name+","+d.department);
+			}
+			
 		}
 		
 		
@@ -231,49 +238,28 @@ public class Server {
 			s.sendMessageToShow();
 		}
 	}
-//	private void addOnlineDoctorInfo(String string) {
-//		                            //读数据库 医生信息表
-//		if(string.equals("123")){
-//			DoctorInfo di=new DoctorInfo();
-//			di.name="张三";
-//			di.waitCount=0;
-//			di.department="surgery";
-//			di.account=string;
-//			onlineDoctor.add(di);
-//		}else if(string.equals("456")){
-//			DoctorInfo di=new DoctorInfo();
-//			di.name="李四";
-//			di.waitCount=0;
-//			di.department="surgery";
-//			di.account=string;
-//			onlineDoctor.add(di);
-//		}
-//		
-//	}
-
-//	private boolean login(String type,String account, String password) { //登录函数
-//		
-//		
-//		String command="select * from account where type='";
-//		command+=(type+"' and account='");
-//		command+=(account+"' and password='");
-//		command+=(password+"'");
-//		
-////		if()
-////		if(account.equals("123")&&password.equals("abc"))   //读数据库 账号信息表
-////			return true;
-////		else if(account.equals("456")&&password.equals("abc"))
-////			return true;
-////		System.out.println("账号密码错误");
-//	     return false;
-////		
-//	}
+	
+	static public void sendMessageToPresident(){
+		if(president!=null){
+			PresidentThread.sendAllInfoToPresident();
+		}
+	}
+	
+	static public void sendMedicineInfoToDoctor(){
+		for(DoctorThread d:myDoctor){
+			d.sendInitMedicineInfo();
+		}
+	}
+	
+	static public void sendMessageToAdmin(){		
+		if(admin!=null){
+			AdminThread.sendAllInfoToAdmin();  //发送更新信息给管理员
+		}
+	}
 	
 	public static void main(String[] args) {
 		Server server=new Server();
 		server.openServer();  //打开服务器
-
 	}
-
 }
 

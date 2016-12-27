@@ -23,7 +23,7 @@ public class ChargeThread extends Thread {
 	}
 	
 	static public HashMap<String,patientInfo> allPatient=new HashMap<String,patientInfo>();
-	static public HashMap<String,String> patientDepart=new HashMap<String,String>();
+	//static public HashMap<String,String> patientDepart=new HashMap<String,String>();
 	static int id=0;
 	
 	Socket client;
@@ -75,6 +75,8 @@ public class ChargeThread extends Thread {
 			//修改数据库部门药品的收入
 			SQLOperate.updateDepartmentMedicineIncome(allPatient.get(string[5]).department, Integer.parseInt(string[1]));
 			SQLOperate.updateDoctorMedicineIncome(allPatient.get(string[5]).doctorAccount, Integer.parseInt(string[1]));
+			Server.sendMessageToPresident();      //发送更新信息给院长
+			
 			String message=info;
 			try {
 				PrintWriter pw= new PrintWriter(Server.store.getOutputStream());
@@ -120,13 +122,16 @@ public class ChargeThread extends Thread {
 		allPatient.put(p.id,p);
 		System.out.println(string[0]);
 		
-		SQLOperate.updateDepartmentRegisterIncome(string[0]);	  //科室挂号利润增加	
-		SQLOperate.updateDoctorRegisterIncome(p.id);              //医生挂号利润增加
+		
 		
 		//message= name(patient),sex,age,id   发给医生的信息
 		doctor.patientQueue.add(p.id);
 		doctor.waitCount++;
-		Server.sendMessageToShow();     //发信息给滚动屏
+		
+		SQLOperate.updateDepartmentRegisterIncome(string[0]);	  //科室挂号利润增加	
+		SQLOperate.updateDoctorRegisterIncome(doctor.account);              //医生挂号利润增加
+		Server.sendMessageToShow();            //发信息给滚动屏
+		Server.sendMessageToPresident();      //发送更新信息给院长
 		
 		String message=string[1]+","+string[2]+","+string[3]+","+id;
 		Socket sendSocket=Server.doctorSocket.get(doctor.account);

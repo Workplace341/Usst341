@@ -52,11 +52,13 @@ public class StoreThread extends Thread {
 				String m[]=s.split(",");
 				SQLOperate.declineMedicineCount(m[0], Integer.parseInt(m[1]));
 			}
-			System.out.println(ChargeThread.patientDepart.get(property[5]));
+			System.out.println(ChargeThread.allPatient.get(property[5]).department);
 			
+			Server.sendMessageToPresident();      //发送更新信息给院长
+			Server.sendMessageToAdmin();        //发送更新信息给管理员
 			
 			ChargeThread.allPatient.remove(property[5]);
-			ChargeThread.patientDepart.remove(property[5]);
+			//ChargeThread.patientDepart.remove(property[5]);
 		}
 	
 	}

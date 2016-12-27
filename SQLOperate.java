@@ -279,4 +279,62 @@ public class SQLOperate {
 		}		
 	}
 	
+	static public String sendDoctorInfoToPresident(){
+	
+		String message="";
+		String command="select * from doctor";
+		try {
+			ResultSet rs=st.executeQuery(command);
+					
+			while(rs.next()){
+				message+=(rs.getString(2).trim()+",");
+				message+=(rs.getString(5).trim()+",");
+				message+=((rs.getInt(7)/10)+",");
+				message+=(rs.getString(8).trim()+"#");
+			}
+			rs.close();
+	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//System.out.println(message);
+		return message;
+	}
+	
+	static public String sendDepartmentInfoToPresident(){
+		
+		String message1="";
+		String message2="";
+		String message3="";
+		String command="select * from departmentIncome";
+		try {
+			ResultSet rs=st.executeQuery(command);
+					
+			while(rs.next()){
+				String depart=rs.getString(1).trim();
+				if(depart.equals("internal")){
+					message1+=((rs.getInt(2)/10)+",");
+					message1+=(rs.getString(4).trim());
+				}
+				else if(depart.equals("surgery")){
+					message2+=((rs.getInt(2)/10)+",");
+					message2+=(rs.getString(4).trim());
+				}
+				else if(depart.equals("paediatrics")){
+					message3+=((rs.getInt(2)/10)+",");
+					message3+=(rs.getString(4).trim());
+				}
+			}
+			rs.close();
+	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//System.out.println(message);
+		return (message1+"="+message2+"="+message3);
+			
+	}
+	
 }

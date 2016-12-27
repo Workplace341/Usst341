@@ -17,16 +17,15 @@ public class AdminThread extends Thread {
 		this.client=s;
 		try {
 			br = new BufferedReader(new InputStreamReader(client.getInputStream()));
-			pw= new PrintWriter(client.getOutputStream());
+			pw = new PrintWriter(client.getOutputStream());
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 			
-		
-		sendMedicneInfo();//在构造函数里发药品信息给管理员客户端
-		sendDoctorInfo();// 医生信息
+		sendAllInfoToAdmin();  //发送更新信息给管理员
+	
 	}
 	
 	public void run(){
@@ -45,11 +44,18 @@ public class AdminThread extends Thread {
 	}
 	//info=operate-name,newName,account,price
 	private void analysis(String info) {
+		if(info.equals("")){
+			return ;
+		}
+		if(info==null){
+			return;
+		}
+			
 		String string[]=info.split(",");
 		switch(string[0]){
-		case "changeMedicineInfo":SQLOperate.changeMedicineInfo(string[1], string[2], string[3],string[4]);break;
-		case "addMedicineInfo":SQLOperate.addMedicineInfo(string[1], string[2], string[3]);break;
-		case "deleteMedicineInfo":SQLOperate.deleteMedicineInfo(string[1]);break;
+		case "changeMedicineInfo":SQLOperate.changeMedicineInfo(string[1], string[2], string[3],string[4]);/*Server.sendMedicineInfoToDoctor();*/break;
+		case "addMedicineInfo":SQLOperate.addMedicineInfo(string[1], string[2], string[3]);/*Server.sendMedicineInfoToDoctor();*/break;
+		case "deleteMedicineInfo":SQLOperate.deleteMedicineInfo(string[1]);/*Server.sendMedicineInfoToDoctor();*/break;
 		case "changeDoctorInfo":SQLOperate.changeDoctorInfo(string[1], string[2], string[3], string[4], string[5], string[6]);break;
 		case "addDoctorInfo":SQLOperate.addDoctorInfo(string[1], string[2], string[3], string[4], string[5], string[6]);break;
 		case "deleteDoctorInfo":SQLOperate.deleteDoctorInfo(string[1]);break;
@@ -71,7 +77,10 @@ public class AdminThread extends Thread {
 		pw.println(message);
 		System.out.println("发送药品信息给管理员："+message);
 		pw.flush();
-		
 	}
-
+	
+	static void sendAllInfoToAdmin(){
+		sendMedicneInfo();//在构造函数里发药品信息给管理员客户端
+		sendDoctorInfo();// 医生信息
+	}
 }

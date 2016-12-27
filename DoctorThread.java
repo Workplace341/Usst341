@@ -39,13 +39,25 @@ public class DoctorThread extends Thread {
 		try {
 			while(true){
 			info=br.readLine();
+			System.out.println("xinxi"+info);
+			if(info==null){
+				doctorExit();
+				System.out.println("Mac");
+		        Server.sendMessageToShow();           //发信息给滚动屏
+		        Server.sendMessageToPresident();    //发送更新信息给院长
+		        break;
+			}
 			analysis(info);  //分析数据
 			}
 		} catch (IOException e) {
 			         doctorExit();
-			         Server.sendMessageToShow(); //发信息给滚动屏
-			e.printStackTrace(); 
+			         Server.sendMessageToShow();           //发信息给滚动屏
+			         Server.sendMessageToPresident();      //发送更新信息给院长
+			         e.printStackTrace(); 
 		}
+		doctorExit();
+        Server.sendMessageToShow();           //发信息给滚动屏
+        Server.sendMessageToPresident();      //发送更新信息给院长
 	}
 	      
 
@@ -53,9 +65,20 @@ public class DoctorThread extends Thread {
 	//info=name(patient),sex,age,id#medicine,count-medicine,count....
 	private void analysis(String info) {
 		int price=0;
-		String string[]=info.split("#");
-		String patientInfo[]=string[0].split(",");
-		String medicineInfo[]=string[1].split("-");
+		String string[];
+		String patientInfo[] = null;
+		String medicineInfo[] = null;
+		try{
+			string=info.split("#");
+			patientInfo=string[0].split(",");
+			medicineInfo=string[1].split("-");
+		}catch (Exception e) {	
+			 doctorExit();
+	         Server.sendMessageToShow();           //发信息给滚动屏
+	         Server.sendMessageToPresident();      //发送更新信息给院长
+	         return;
+		}
+		
 //		SQLOperate.doctorReadMedicineData();
 		for(String s:medicineInfo){
 			String str[]=s.split(",");
@@ -77,6 +100,7 @@ public class DoctorThread extends Thread {
 			
 		} catch (IOException e) {
 			//与收费员连接失败
+
 			e.printStackTrace();
 		}
 		
@@ -102,6 +126,7 @@ public class DoctorThread extends Thread {
 		}
 		
 		Server.sendMessageToShow(); //发信息给滚动屏
+		Server.sendMessageToPresident();      //发送更新信息给院长
 	    //把病人从医生队列里移除
 	}
 
@@ -117,7 +142,7 @@ public class DoctorThread extends Thread {
 			for (String s:set) { 
 				message+=(s+"-"+medicineData.get(s).price+"#");	 
 			}  
-			System.out.println(message);
+			System.out.println("发送给医生的药品信息"+message);
 			pw.println(message);  
 			pw.flush();
 			
@@ -129,13 +154,12 @@ public class DoctorThread extends Thread {
 	}
 	
 	 private void doctorExit() {
-			for(Server.DoctorInfo d:Server.onlineDoctor){
-				if(d.account.equals(myAccount)){
+		 for(Server.DoctorInfo d:Server.onlineDoctor){
+			 if(d.account.equals(myAccount)){
 					Server.onlineDoctor.remove(d);
 					break;
-				}
-			}
+			 }			
+		 }
+	 }
 			
-		}
-
 }
