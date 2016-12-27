@@ -13,14 +13,18 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.Button;
 import javax.swing.JButton;
+import javax.swing.JTextArea;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class President extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-
+	static JTextField textField;
+	static JTextField textField_1;
+	static JTextField textField_2;
+	public static JTextArea textArea;
+	public static JTextArea textArea_1;
 	/**
 	 * Launch the application.
 	 */
@@ -46,15 +50,16 @@ public class President extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		CardLayout card=new CardLayout(0, 0);
 		contentPane.setLayout(new CardLayout(0, 0));
 		
 		Panel panel = new Panel();
-		contentPane.add(panel, "name_39842166200974");
+		contentPane.add(panel, "panel");
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("\u9662\u957Fpresident");
 		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		lblNewLabel.setBounds(382, 6, 122, 51);
+		lblNewLabel.setBounds(378, 41, 122, 51);
 		panel.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("\u5185\u79D1");
@@ -96,16 +101,66 @@ public class President extends JFrame {
 		label_3.setBounds(231, 41, 65, 16);
 		panel.add(label_3);
 		
-		JButton btnNewButton = new JButton("refresh");
-		btnNewButton.setBounds(376, 69, 72, 33);
-		panel.add(btnNewButton);
-		
 		JButton btnMedicine = new JButton("Medicine");
+		btnMedicine.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(contentPane, "panel_1");
+			}
+		});
 		btnMedicine.setBounds(72, 214, 128, 45);
 		panel.add(btnMedicine);
 		
 		JButton btnDoctor = new JButton("Doctor");
+		btnDoctor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(contentPane, "panel_2");
+			}
+		});
 		btnDoctor.setBounds(231, 214, 128, 45);
 		panel.add(btnDoctor);
+		
+		Panel panel_1 = new Panel();
+		contentPane.add(panel_1, "panel_1");
+		panel_1.setLayout(null);
+		
+		JLabel lblNewLabel_3 = new JLabel("Medicine  detail");
+		lblNewLabel_3.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		lblNewLabel_3.setBounds(20, 6, 195, 42);
+		panel_1.add(lblNewLabel_3);
+		
+		textArea = new JTextArea();
+		textArea.setBounds(19, 51, 278, 220);
+		panel_1.add(textArea);
+		
+		JButton btnBack = new JButton("back");
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(contentPane, "panel");
+			}
+		});
+		btnBack.setBounds(352, 234, 138, 37);
+		panel_1.add(btnBack);
+		
+		Panel panel_2 = new Panel();
+		contentPane.add(panel_2, "panel_2");
+		panel_2.setLayout(null);
+		
+		JLabel lblDoctorDetail = new JLabel("Doctor  detail");
+		lblDoctorDetail.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		lblDoctorDetail.setBounds(21, 16, 124, 28);
+		panel_2.add(lblDoctorDetail);
+		
+		textArea_1 = new JTextArea();
+		textArea_1.setBounds(16, 51, 300, 228);
+		panel_2.add(textArea_1);
+		
+		JButton btnBack_1 = new JButton("back");
+		btnBack_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(contentPane, "panel");
+			}
+		});
+		btnBack_1.setBounds(371, 225, 116, 45);
+		panel_2.add(btnBack_1);
 	}
 }
