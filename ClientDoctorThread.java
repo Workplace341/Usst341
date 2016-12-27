@@ -62,7 +62,7 @@ public class ClientDoctorThread extends Thread {
 				message=br.readLine();
 				analysis(message);  //分析数据
 				System.out.println("从服务器收到病人的信息："+message);   
-				}
+			}
 								
 		} catch (IOException e) {
 			           //连接失败
@@ -95,6 +95,8 @@ public class ClientDoctorThread extends Thread {
 		String string[]=message.split(",");
 		String nextString[]=string[1].split("#"); //nextString[0]=name+count
 		
+		//myMedicineInfo.clear();
+		myMedicineInfo=new HashMap<String,medicineInfo>();
 		for(String str:nextString){
 			System.out.println(str);
 			//if(str==null)continue;
